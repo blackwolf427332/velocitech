@@ -3,15 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IT Graphics & Islamic Research</title>
+    <title>AH IT, Graphics & Research</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        :root {
-            --emerald: #064E3B;
-            --gold: #D4AF37;
-            --cyber: #0EA5E9;
-        }
+        :root { --emerald: #064E3B; --gold: #D4AF37; }
         .gold-gradient { background: linear-gradient(to right, #D4AF37, #F5E3A6); }
+        .glass { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-900 font-sans">
@@ -22,7 +19,7 @@
             <div class="space-x-4 text-sm font-medium">
                 <a href="#services" class="hover:text-sky-400">Services</a>
                 <a href="#research" class="hover:text-sky-400">Research</a>
-                <a href="#contact" class="bg-[#D4AF37] px-3 py-1 rounded text-emerald-900">Hire Me</a>
+                <button onclick="showLogin()" class="bg-[#D4AF37] px-3 py-1 rounded text-emerald-900 font-bold">Client Portal</button>
             </div>
         </div>
     </nav>
@@ -32,57 +29,144 @@
         <p class="text-sky-100 max-w-2xl mx-auto text-lg">Premium IT & Graphic Design services paired with deep-dive Islamic research and factual consultation.</p>
     </header>
 
-    <section id="services" class="max-w-6xl mx-auto py-16 px-6">
-        <h3 class="text-3xl font-bold text-center mb-12 text-[#064E3B]">Professional Services</h3>
-        <div class="grid md:grid-cols-2 gap-8">
-            <div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-sky-500">
-                <h4 class="text-xl font-bold mb-2">IT & Web Solutions</h4>
-                <p class="text-gray-600">Expertise in Windows environments, networking, and high-performance web operations to keep your business running smoothly.</p>
+    <main id="main-content">
+        <section id="services" class="max-w-6xl mx-auto py-16 px-6">
+            <h3 class="text-3xl font-bold text-center mb-12 text-[#064E3B]">Professional Services</h3>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-sky-500">
+                    <h4 class="text-xl font-bold mb-2">IT & Web Solutions</h4>
+                    <p class="text-gray-600">Expertise in Windows environments, networking, and high-performance web operations.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-[#D4AF37]">
+                    <h4 class="text-xl font-bold mb-2">Graphic Design</h4>
+                    <p class="text-gray-600">Bespoke visual identities using Adobe Illustrator and Photoshop for modern growth.</p>
+                </div>
             </div>
-            <div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-[#D4AF37]">
-                <h4 class="text-xl font-bold mb-2">Graphic Design</h4>
-                <p class="text-gray-600">Bespoke visual identities using Adobe Illustrator and Photoshop. Engaging content designed for modern growth.</p>
+        </section>
+
+        <section id="research" class="bg-emerald-900 text-white py-16 px-6">
+            <div class="max-w-4xl mx-auto text-center">
+                <h3 class="text-3xl font-bold mb-6 text-[#D4AF37]">Islamic Research & Consultation</h3>
+                <p class="italic mb-8">"Providing evidence-based research on religious facts and historical context."</p>
+                <div class="bg-emerald-800 p-8 rounded-lg border border-emerald-700 text-left">
+                    <h5 class="font-bold mb-2">Consultation Topics:</h5>
+                    <ul class="list-disc ml-5 space-y-2 text-emerald-100">
+                        <li>Verification of religious facts and historical timelines.</li>
+                        <li>Deep research papers for educational or personal study.</li>
+                        <li>The intersection of modern technology and Islamic ethics.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <section id="login-section" class="hidden max-w-md mx-auto my-10 p-8 glass border border-emerald-100 rounded-3xl shadow-2xl">
+        <h3 class="text-2xl font-bold text-emerald-900 mb-2">Client Portal</h3>
+        <p class="text-sm text-gray-500 mb-6">Enter email for a secure access code.</p>
+        
+        <div id="email-step">
+            <input type="email" id="login-email" placeholder="name@email.com" class="w-full p-4 bg-slate-50 border rounded-xl mb-4 outline-none focus:ring-2 focus:ring-emerald-500">
+            <button onclick="sendOTP()" class="w-full py-4 bg-emerald-900 text-white font-bold rounded-xl hover:bg-emerald-800 transition">Send Code</button>
+        </div>
+
+        <div id="otp-step" class="hidden">
+            <input type="text" id="login-otp" placeholder="000000" class="w-full p-4 tracking-[1em] text-center font-bold text-xl border rounded-xl mb-4 outline-none">
+            <button onclick="verifyOTP()" class="w-full py-4 bg-[#D4AF37] text-emerald-900 font-bold rounded-xl">Verify & Enter</button>
+        </div>
+    </section>
+
+    <section id="dashboard" class="hidden max-w-4xl mx-auto py-12 px-6">
+        <div class="bg-white border-2 border-emerald-900 rounded-2xl p-8 shadow-xl">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-emerald-900">Welcome, <span id="user-name">Guest</span></h2>
+                <button onclick="location.reload()" class="text-sm text-red-600 font-bold uppercase">Logout</button>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-6 mb-8">
+                <div class="p-4 bg-slate-50 rounded-lg border">
+                    <p class="text-xs text-gray-500 uppercase font-bold">Last IT/Graphics Service</p>
+                    <p id="user-service" class="text-lg font-medium text-sky-600 italic">No services yet</p>
+                </div>
+                <div class="p-4 bg-slate-50 rounded-lg border">
+                    <p class="text-xs text-gray-500 uppercase font-bold">Account Status</p>
+                    <p class="text-lg font-medium text-emerald-700">Verified Client</p>
+                </div>
+            </div>
+
+            <h3 class="text-xl font-bold text-emerald-900 mb-4 flex items-center">
+                <span class="mr-2">📜</span> Your Research Archive
+            </h3>
+            <div id="research-list" class="space-y-4">
+                <p class="text-gray-400 italic">No research records found.</p>
             </div>
         </div>
     </section>
 
-    <section id="research" class="bg-emerald-900 text-white py-16 px-6">
-        <div class="max-w-4xl mx-auto text-center">
-            <h3 class="text-3xl font-bold mb-6 text-[#D4AF37]">Islamic Research & Consultation</h3>
-            <p class="italic mb-8">"Providing evidence-based research on religious facts and historical context for deep understanding."</p>
-            <div class="bg-emerald-800 p-8 rounded-lg border border-emerald-700 text-left">
-                <h5 class="font-bold mb-2">Consultation Topics:</h5>
-                <ul class="list-disc ml-5 space-y-2 text-emerald-100">
-                    <li>Verification of religious facts and historical timelines.</li>
-                    <li>Deep research papers for educational or personal study.</li>
-                    <li>The intersection of modern technology and Islamic ethics.</li>
-                </ul>
-            </div>
-        </div>
-    </section>
-
-    <section id="contact" class="max-w-2xl mx-auto py-16 px-6">
-        <div class="bg-white p-8 rounded-2xl shadow-2xl">
-            <h3 class="text-2xl font-bold mb-6 text-center text-emerald-900">Inquiry Forum</h3>
-            <form class="space-y-4">
-                <input type="text" placeholder="Your Name" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none">
-                <input type="email" placeholder="Email Address" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none">
-                <select class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none">
-                    <option>Select Service</option>
-                    <option>Graphic Design Project</option>
-                    <option>IT Infrastructure Help</option>
-                    <option>Islamic Research Request</option>
-                </select>
-                <textarea placeholder="Describe your requirement..." rows="4" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"></textarea>
-                <button class="w-full py-3 gold-gradient text-emerald-900 font-bold rounded-lg hover:opacity-90 transition">Submit Request</button>
-            </form>
-        </div>
-    </section>
-
-    <footer class="bg-slate-900 text-slate-500 py-8 text-center text-sm">
-        <p>&copy; 2026 IT & Research Consultancy. All rights reserved.</p>
+    <footer class="bg-slate-900 text-slate-500 py-8 text-center text-sm mt-20">
+        <p>&copy; 2026 AH IT & Research. All rights reserved.</p>
     </footer>
 
+    <script>
+        let userEmail = "";
+
+        function showLogin() {
+            document.getElementById('main-content').classList.add('hidden');
+            document.getElementById('login-section').classList.remove('hidden');
+            window.scrollTo(0,0);
+        }
+
+        async function sendOTP() {
+            userEmail = document.getElementById('login-email').value;
+            try {
+                const response = await fetch('/send-otp', {
+                    method: 'POST',
+                    body: JSON.stringify({ email: userEmail })
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    alert("Check your email! (Debug Code: " + data.debug_code + ")");
+                    document.getElementById('email-step').classList.add('hidden');
+                    document.getElementById('otp-step').classList.remove('hidden');
+                }
+            } catch (err) { alert("Error connecting to server."); }
+        }
+
+        async function verifyOTP() {
+            const otp = document.getElementById('login-otp').value;
+            try {
+                const response = await fetch('/verify-otp', {
+                    method: 'POST',
+                    body: JSON.stringify({ email: userEmail, otp: otp })
+                });
+                const data = await response.json();
+
+                if (data.success) {
+                    document.getElementById('login-section').classList.add('hidden');
+                    document.getElementById('dashboard').classList.remove('hidden');
+                    document.getElementById('user-name').innerText = data.name;
+                    document.getElementById('user-service').innerText = data.last_service;
+
+                    // Fetch Research Logs
+                    const resLog = await fetch('/get-research', {
+                        method: 'POST',
+                        body: JSON.stringify({ email: userEmail })
+                    });
+                    const logs = await resLog.json();
+                    const listContainer = document.getElementById('research-list');
+                    if (logs.length > 0) {
+                        listContainer.innerHTML = logs.map(log => `
+                            <div class="p-4 bg-amber-50 border-l-4 border-emerald-700 rounded-r-lg shadow-sm">
+                                <div class="flex justify-between items-start">
+                                    <h4 class="font-bold text-emerald-900">${log.topic}</h4>
+                                    <span class="text-xs text-emerald-600">${new Date(log.date_consulted).toLocaleDateString()}</span>
+                                </div>
+                                <p class="text-sm text-gray-700 mt-1">${log.summary}</p>
+                            </div>
+                        `).join('');
+                    }
+                } else { alert(data.error); }
+            } catch (err) { alert("Verification failed."); }
+        }
+    </script>
 </body>
-  </html>
-  
+</html>
