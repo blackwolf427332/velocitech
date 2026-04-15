@@ -26,7 +26,7 @@
 
     <header class="bg-[#064E3B] text-white py-16 px-6 text-center border-b-4 border-[#D4AF37]">
         <h2 class="text-4xl font-extrabold mb-4">Modern Solutions. Ancient Wisdom.</h2>
-        <p class="text-sky-100 max-w-2xl mx-auto text-lg">Premium IT & Graphic Design services paired with deep-dive Islamic research and factual consultation.</p>
+        <p class="text-sky-100 max-w-2xl mx-auto text-lg">Premium IT & Graphic Design services paired with deep-dive Islamic research.</p>
     </header>
 
     <main id="main-content">
@@ -35,25 +35,22 @@
             <div class="grid md:grid-cols-2 gap-8">
                 <div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-sky-500">
                     <h4 class="text-xl font-bold mb-2">IT & Web Solutions</h4>
-                    <p class="text-gray-600">Expertise in Windows environments, networking, and high-performance web operations.</p>
+                    <p class="text-gray-600">Networking, Windows environments, and web operations.</p>
                 </div>
                 <div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-[#D4AF37]">
                     <h4 class="text-xl font-bold mb-2">Graphic Design</h4>
-                    <p class="text-gray-600">Bespoke visual identities using Adobe Illustrator and Photoshop for modern growth.</p>
+                    <p class="text-gray-600">Visual identities using Adobe Illustrator and Photoshop.</p>
                 </div>
             </div>
         </section>
 
         <section id="research" class="bg-emerald-900 text-white py-16 px-6">
             <div class="max-w-4xl mx-auto text-center">
-                <h3 class="text-3xl font-bold mb-6 text-[#D4AF37]">Islamic Research & Consultation</h3>
-                <p class="italic mb-8">"Providing evidence-based research on religious facts and historical context."</p>
+                <h3 class="text-3xl font-bold mb-6 text-[#D4AF37]">Islamic Research</h3>
                 <div class="bg-emerald-800 p-8 rounded-lg border border-emerald-700 text-left">
-                    <h5 class="font-bold mb-2">Consultation Topics:</h5>
                     <ul class="list-disc ml-5 space-y-2 text-emerald-100">
-                        <li>Verification of religious facts and historical timelines.</li>
-                        <li>Deep research papers for educational or personal study.</li>
-                        <li>The intersection of modern technology and Islamic ethics.</li>
+                        <li>Verification of religious facts.</li>
+                        <li>Historical timelines and deep-dive papers.</li>
                     </ul>
                 </div>
             </div>
@@ -62,43 +59,44 @@
 
     <section id="login-section" class="hidden max-w-md mx-auto my-10 p-8 glass border border-emerald-100 rounded-3xl shadow-2xl">
         <h3 class="text-2xl font-bold text-emerald-900 mb-2">Client Portal</h3>
-        <p class="text-sm text-gray-500 mb-6">Enter email for a secure access code.</p>
+        <p class="text-sm text-gray-500 mb-6">New here? Enter your name. Returning? Just enter email.</p>
         
         <div id="email-step">
-            <input type="email" id="login-email" placeholder="name@email.com" class="w-full p-4 bg-slate-50 border rounded-xl mb-4 outline-none focus:ring-2 focus:ring-emerald-500">
-            <button onclick="sendOTP()" class="w-full py-4 bg-emerald-900 text-white font-bold rounded-xl hover:bg-emerald-800 transition">Send Code</button>
+            <input type="text" id="login-name" placeholder="Full Name (For New Clients)" class="w-full p-4 bg-slate-50 border rounded-xl mb-4 outline-none focus:ring-2 focus:ring-emerald-500">
+            <input type="email" id="login-email" placeholder="email@address.com" class="w-full p-4 bg-slate-50 border rounded-xl mb-4 outline-none focus:ring-2 focus:ring-emerald-500">
+            <select id="login-service" class="w-full p-4 bg-slate-50 border rounded-xl mb-4 text-gray-500">
+                <option value="">Select Primary Interest</option>
+                <option value="IT Services">IT Services</option>
+                <option value="Graphics">Graphics Design</option>
+                <option value="Research">Islamic Research</option>
+            </select>
+            <button onclick="sendOTP()" class="w-full py-4 bg-emerald-900 text-white font-bold rounded-xl">Get Secure Code</button>
         </div>
 
         <div id="otp-step" class="hidden">
-            <input type="text" id="login-otp" placeholder="000000" class="w-full p-4 tracking-[1em] text-center font-bold text-xl border rounded-xl mb-4 outline-none">
-            <button onclick="verifyOTP()" class="w-full py-4 bg-[#D4AF37] text-emerald-900 font-bold rounded-xl">Verify & Enter</button>
+            <input type="text" id="login-otp" placeholder="000000" class="w-full p-4 tracking-[1em] text-center font-bold text-xl border rounded-xl mb-4">
+            <button onclick="verifyOTP()" class="w-full py-4 bg-[#D4AF37] text-emerald-900 font-bold rounded-xl">Verify & Login</button>
         </div>
     </section>
 
     <section id="dashboard" class="hidden max-w-4xl mx-auto py-12 px-6">
         <div class="bg-white border-2 border-emerald-900 rounded-2xl p-8 shadow-xl">
             <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-bold text-emerald-900">Welcome, <span id="user-name">Guest</span></h2>
-                <button onclick="location.reload()" class="text-sm text-red-600 font-bold uppercase">Logout</button>
+                <h2 class="text-2xl font-bold text-emerald-900">Assalam-o-Alaikum, <span id="user-name">Client</span></h2>
+                <button onclick="location.reload()" class="text-xs text-red-600 font-bold">Logout</button>
             </div>
-            
             <div class="grid md:grid-cols-2 gap-6 mb-8">
                 <div class="p-4 bg-slate-50 rounded-lg border">
-                    <p class="text-xs text-gray-500 uppercase font-bold">Last IT/Graphics Service</p>
-                    <p id="user-service" class="text-lg font-medium text-sky-600 italic">No services yet</p>
+                    <p class="text-xs text-gray-500 font-bold uppercase">Recent Project</p>
+                    <p id="user-service" class="text-lg font-medium text-sky-600 italic">Processing...</p>
                 </div>
                 <div class="p-4 bg-slate-50 rounded-lg border">
-                    <p class="text-xs text-gray-500 uppercase font-bold">Account Status</p>
-                    <p class="text-lg font-medium text-emerald-700">Verified Client</p>
+                    <p class="text-xs text-gray-500 font-bold uppercase">Archive Access</p>
+                    <p class="text-lg font-medium text-emerald-700">Research Member</p>
                 </div>
             </div>
-
-            <h3 class="text-xl font-bold text-emerald-900 mb-4 flex items-center">
-                <span class="mr-2">📜</span> Your Research Archive
-            </h3>
-            <div id="research-list" class="space-y-4">
-                <p class="text-gray-400 italic">No research records found.</p>
-            </div>
+            <h3 class="font-bold text-emerald-900 mb-4">📜 Consultation Logs</h3>
+            <div id="research-list" class="space-y-4"></div>
         </div>
     </section>
 
@@ -108,7 +106,6 @@
 
     <script>
         let userEmail = "";
-
         function showLogin() {
             document.getElementById('main-content').classList.add('hidden');
             document.getElementById('login-section').classList.remove('hidden');
@@ -117,55 +114,43 @@
 
         async function sendOTP() {
             userEmail = document.getElementById('login-email').value;
-            try {
-                const response = await fetch('/send-otp', {
-                    method: 'POST',
-                    body: JSON.stringify({ email: userEmail })
-                });
-                const data = await response.json();
-                if (response.ok) {
-                    alert("Check your email! (Debug Code: " + data.debug_code + ")");
-                    document.getElementById('email-step').classList.add('hidden');
-                    document.getElementById('otp-step').classList.remove('hidden');
-                }
-            } catch (err) { alert("Error connecting to server."); }
+            const name = document.getElementById('login-name').value;
+            const service = document.getElementById('login-service').value;
+
+            const res = await fetch('/send-otp', {
+                method: 'POST',
+                body: JSON.stringify({ email: userEmail, name: name, service: service })
+            });
+            const data = await res.json();
+            if (res.ok) {
+                alert("Code Sent! Debug: " + data.debug_code);
+                document.getElementById('email-step').classList.add('hidden');
+                document.getElementById('otp-step').classList.remove('hidden');
+            }
         }
 
         async function verifyOTP() {
             const otp = document.getElementById('login-otp').value;
-            try {
-                const response = await fetch('/verify-otp', {
-                    method: 'POST',
-                    body: JSON.stringify({ email: userEmail, otp: otp })
-                });
-                const data = await response.json();
+            const res = await fetch('/verify-otp', {
+                method: 'POST',
+                body: JSON.stringify({ email: userEmail, otp: otp })
+            });
+            const data = await res.json();
+            if (data.success) {
+                document.getElementById('login-section').classList.add('hidden');
+                document.getElementById('dashboard').classList.remove('hidden');
+                document.getElementById('user-name').innerText = data.name;
+                document.getElementById('user-service').innerText = data.last_service;
 
-                if (data.success) {
-                    document.getElementById('login-section').classList.add('hidden');
-                    document.getElementById('dashboard').classList.remove('hidden');
-                    document.getElementById('user-name').innerText = data.name;
-                    document.getElementById('user-service').innerText = data.last_service;
-
-                    // Fetch Research Logs
-                    const resLog = await fetch('/get-research', {
-                        method: 'POST',
-                        body: JSON.stringify({ email: userEmail })
-                    });
-                    const logs = await resLog.json();
-                    const listContainer = document.getElementById('research-list');
-                    if (logs.length > 0) {
-                        listContainer.innerHTML = logs.map(log => `
-                            <div class="p-4 bg-amber-50 border-l-4 border-emerald-700 rounded-r-lg shadow-sm">
-                                <div class="flex justify-between items-start">
-                                    <h4 class="font-bold text-emerald-900">${log.topic}</h4>
-                                    <span class="text-xs text-emerald-600">${new Date(log.date_consulted).toLocaleDateString()}</span>
-                                </div>
-                                <p class="text-sm text-gray-700 mt-1">${log.summary}</p>
-                            </div>
-                        `).join('');
-                    }
-                } else { alert(data.error); }
-            } catch (err) { alert("Verification failed."); }
+                const resLog = await fetch('/get-research', { method: 'POST', body: JSON.stringify({ email: userEmail }) });
+                const logs = await resLog.json();
+                document.getElementById('research-list').innerHTML = logs.map(l => `
+                    <div class="p-4 bg-amber-50 border-l-4 border-emerald-700 rounded shadow-sm">
+                        <h4 class="font-bold">${l.topic}</h4>
+                        <p class="text-sm text-gray-700">${l.summary}</p>
+                    </div>
+                `).join('') || '<p class="text-gray-400 italic">No logs yet.</p>';
+            }
         }
     </script>
 </body>
