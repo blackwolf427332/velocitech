@@ -104,8 +104,14 @@
         <p>&copy; 2026 AH IT & Research. All rights reserved.</p>
     </footer>
 
-    <script>
+        <script>
         let userEmail = "";
+
+        // Global error logger to catch silent crashes
+        window.onerror = function(msg, url, line) {
+            alert("JS Error: " + msg + "\nLine: " + line);
+        };
+
         function showLogin() {
             document.getElementById('main-content').classList.add('hidden');
             document.getElementById('login-section').classList.remove('hidden');
@@ -113,45 +119,85 @@
         }
 
         async function sendOTP() {
-            userEmail = document.getElementById('login-email').value;
-            const name = document.getElementById('login-name').value;
-            const service = document.getElementById('login-service').value;
+            try {
+                console.log("Button clicked...");
+                userEmail = document.getElementById('login-email').value;
+                const name = document.getElementById('login-name').value;
+                const service = document.getElementById('login-service').value;
 
-            const res = await fetch('/send-otp', {
-                method: 'POST',
-                body: JSON.stringify({ email: userEmail, name: name, service: service })
-            });
-            const data = await res.json();
-            if (res.ok) {
+                if (!userEmail) {
+                    alert("Please enter an email address.");
+                    return;
+                }
+
+                // Visual feedback that the button was pressed
+                const btn = event.target;
+                btn.innerText = "Connecting...";
+                btn.disabled = true;
+
+                const res = await fetch('/send-otp', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: userEmail, name: name, service: service })
+                });
+
+                if (!res.ok) {
+                    const errorText = await res.text();
+                    throw new Error("Server returned " + res.status + ": " + errorText);
+                }
+
+                const data = await res.json();
                 alert("Code Sent! Debug: " + data.debug_code);
+                
                 document.getElementById('email-step').classList.add('hidden');
                 document.getElementById('otp-step').classList.remove('hidden');
+
+            } catch (err) {
+                alert("CRITICAL ERROR: " + err.message);
+                console.error(err);
+            } finally {
+                const btn = document.querySelector("#email-step button");
+                btn.innerText = "Get Secure Code";
+                btn.disabled = false;
             }
         }
 
         async function verifyOTP() {
-            const otp = document.getElementById('login-otp').value;
-            const res = await fetch('/verify-otp', {
-                method: 'POST',
-                body: JSON.stringify({ email: userEmail, otp: otp })
-            });
-            const data = await res.json();
-            if (data.success) {
-                document.getElementById('login-section').classList.add('hidden');
-                document.getElementById('dashboard').classList.remove('hidden');
-                document.getElementById('user-name').innerText = data.name;
-                document.getElementById('user-service').innerText = data.last_service;
+            try {
+                const otp = document.getElementById('login-otp').value;
+                const res = await fetch('/verify-otp', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: userEmail, otp: otp })
+                });
 
-                const resLog = await fetch('/get-research', { method: 'POST', body: JSON.stringify({ email: userEmail }) });
-                const logs = await resLog.json();
-                document.getElementById('research-list').innerHTML = logs.map(l => `
-                    <div class="p-4 bg-amber-50 border-l-4 border-emerald-700 rounded shadow-sm">
-                        <h4 class="font-bold">${l.topic}</h4>
-                        <p class="text-sm text-gray-700">${l.summary}</p>
-                    </div>
-                `).join('') || '<p class="text-gray-400 italic">No logs yet.</p>';
+                const data = await res.json();
+                if (data.success) {
+                    document.getElementById('login-section').classList.add('hidden');
+                    document.getElementById('dashboard').classList.remove('hidden');
+                    document.getElementById('user-name').innerText = data.name;
+                    document.getElementById('user-service').innerText = data.last_service;
+
+                    const resLog = await fetch('/get-research', { 
+                        method: 'POST', 
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email: userEmail }) 
+                    });
+                    const logs = await resLog.json();
+                    document.getElementById('research-list').innerHTML = logs.map(l => `
+                        <div class="p-4 bg-amber-50 border-l-4 border-emerald-700 rounded shadow-sm">
+                            <h4 class="font-bold">${l.topic}</h4>
+                            <p class="text-sm text-gray-700">${l.summary}</p>
+                        </div>
+                    `).join('') || '<p class="text-gray-400 italic">No logs yet.</p>';
+                } else {
+                    alert("Invalid Code. Please try again.");
+                }
+            } catch (err) {
+                alert("Verification Error: " + err.message);
             }
         }
-    </script>
+                                          </script>
+
 </body>
 </html>
