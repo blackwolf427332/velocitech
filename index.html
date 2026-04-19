@@ -108,16 +108,11 @@
 
     <script>
         let userEmail = "";
-        let lastGeneratedCode = ""; // Global variable to store the code for verification
 
         function showLogin() {
-            const mainContent = document.getElementById('main-content');
-            const loginSection = document.getElementById('login-section');
-            if (mainContent && loginSection) {
-                mainContent.classList.add('hidden');
-                loginSection.classList.remove('hidden');
-                window.scrollTo(0, 0);
-            }
+            document.getElementById('main-content').classList.add('hidden');
+            document.getElementById('login-section').classList.remove('hidden');
+            window.scrollTo(0, 0);
         }
 
         async function sendOTP() {
@@ -141,16 +136,12 @@
                     body: JSON.stringify({ email: userEmail, name: name, service: service })
                 });
 
-                const data = await res.json();
-
-                if (res.ok && data.success) {
-                    // Store the code so the user can actually log in
-                    lastGeneratedCode = data.debug_code.toString(); 
+                if (res.ok) {
                     alert("Code Sent! Please check your email.");
-                    
                     document.getElementById('email-step').classList.add('hidden');
                     document.getElementById('otp-step').classList.remove('hidden');
                 } else {
+                    const data = await res.json();
                     throw new Error(data.error || "Failed to send code");
                 }
 
@@ -167,20 +158,29 @@
         }
 
         async function verifyOTP() {
-            const otpInput = document.getElementById('login-otp').value;
-            const nameInput = document.getElementById('login-name').value || "Client";
-            const serviceInput = document.getElementById('login-service').value || "General Consultation";
+            try {
+                const otp = document.getElementById('login-otp').value;
+                const nameInput = document.getElementById('login-name').value || "Client";
+                const serviceInput = document.getElementById('login-service').value || "Consultation";
 
-            // Verify the input against the code stored in memory
-            if (otpInput === lastGeneratedCode && otpInput !== "") {
-                document.getElementById('login-section').classList.add('hidden');
-                document.getElementById('dashboard').classList.remove('hidden');
-                
-                // Update Dashboard with User Data
-                document.getElementById('user-name').innerText = nameInput;
-                document.getElementById('user-service').innerText = serviceInput;
-            } else {
-                alert("Invalid Code. Please check your email and try again.");
+                const res = await fetch('/verify-otp', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: userEmail, otp: otp })
+                });
+
+                const data = await res.json();
+
+                if (res.ok && data.success) {
+                    document.getElementById('login-section').classList.add('hidden');
+                    document.getElementById('dashboard').classList.remove('hidden');
+                    document.getElementById('user-name').innerText = nameInput;
+                    document.getElementById('user-service').innerText = serviceInput;
+                } else {
+                    alert(data.error || "Invalid Code. Please try again.");
+                }
+            } catch (err) {
+                alert("Verification Error: " + err.message);
             }
         }
     </script>
