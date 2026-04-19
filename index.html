@@ -96,7 +96,9 @@
                 </div>
             </div>
             <h3 class="font-bold text-emerald-900 mb-4">📜 Consultation Logs</h3>
-            <div id="research-list" class="space-y-4"></div>
+            <div id="research-list" class="space-y-4">
+                <p class="text-gray-400 italic text-sm">Session initialized successfully.</p>
+            </div>
         </div>
     </section>
 
@@ -104,34 +106,32 @@
         <p>&copy; 2026 AH IT & Research. All rights reserved.</p>
     </footer>
 
-        <script>
+    <script>
         let userEmail = "";
-
-        // Global error logger to catch silent crashes
-        window.onerror = function(msg, url, line) {
-            alert("JS Error: " + msg + "\nLine: " + line);
-        };
+        let lastGeneratedCode = ""; // Global variable to store the code for verification
 
         function showLogin() {
-            document.getElementById('main-content').classList.add('hidden');
-            document.getElementById('login-section').classList.remove('hidden');
-            window.scrollTo(0,0);
+            const mainContent = document.getElementById('main-content');
+            const loginSection = document.getElementById('login-section');
+            if (mainContent && loginSection) {
+                mainContent.classList.add('hidden');
+                loginSection.classList.remove('hidden');
+                window.scrollTo(0, 0);
+            }
         }
 
         async function sendOTP() {
             try {
-                console.log("Button clicked...");
                 userEmail = document.getElementById('login-email').value;
                 const name = document.getElementById('login-name').value;
                 const service = document.getElementById('login-service').value;
+                const btn = document.querySelector("#email-step button");
 
                 if (!userEmail) {
                     alert("Please enter an email address.");
                     return;
                 }
 
-                // Visual feedback that the button was pressed
-                const btn = event.target;
                 btn.innerText = "Connecting...";
                 btn.disabled = true;
 
@@ -141,43 +141,48 @@
                     body: JSON.stringify({ email: userEmail, name: name, service: service })
                 });
 
-                if (!res.ok) {
-                    const errorText = await res.text();
-                    throw new Error("Server returned " + res.status + ": " + errorText);
+                const data = await res.json();
+
+                if (res.ok && data.success) {
+                    // Store the code so the user can actually log in
+                    lastGeneratedCode = data.debug_code.toString(); 
+                    alert("Code Sent! Please check your email.");
+                    
+                    document.getElementById('email-step').classList.add('hidden');
+                    document.getElementById('otp-step').classList.remove('hidden');
+                } else {
+                    throw new Error(data.error || "Failed to send code");
                 }
 
-                const data = await res.json();
-                alert("Code Sent! Debug: " + data.debug_code);
-                
-                document.getElementById('email-step').classList.add('hidden');
-                document.getElementById('otp-step').classList.remove('hidden');
-
             } catch (err) {
-                alert("CRITICAL ERROR: " + err.message);
+                alert("System Error: " + err.message);
                 console.error(err);
             } finally {
                 const btn = document.querySelector("#email-step button");
-                btn.innerText = "Get Secure Code";
-                btn.disabled = false;
+                if (btn) {
+                    btn.innerText = "Get Secure Code";
+                    btn.disabled = false;
+                }
             }
         }
 
         async function verifyOTP() {
-            try {
-                const otp = document.getElementById('login-otp').value;
-        async function verifyOTP() {
-    const otpInput = document.getElementById('login-otp').value;
-    // For testing, we compare the input to the code we saved in the debug alert
-    if (otpInput === lastGeneratedCode) { 
-        document.getElementById('login-section').classList.add('hidden');
-        document.getElementById('dashboard').classList.remove('hidden');
-        // ... rest of your login logic
-    } else {
-        alert("Invalid Code. Please try again.");
-    }
-}
+            const otpInput = document.getElementById('login-otp').value;
+            const nameInput = document.getElementById('login-name').value || "Client";
+            const serviceInput = document.getElementById('login-service').value || "General Consultation";
 
-                                          </script>
-
+            // Verify the input against the code stored in memory
+            if (otpInput === lastGeneratedCode && otpInput !== "") {
+                document.getElementById('login-section').classList.add('hidden');
+                document.getElementById('dashboard').classList.remove('hidden');
+                
+                // Update Dashboard with User Data
+                document.getElementById('user-name').innerText = nameInput;
+                document.getElementById('user-service').innerText = serviceInput;
+            } else {
+                alert("Invalid Code. Please check your email and try again.");
+            }
+        }
+    </script>
 </body>
 </html>
