@@ -1,14 +1,22 @@
 export async function onRequestPost(context) {
-  const { request, env } = context;
-  const { email, otp } = await request.json();
-  const now = new Date().toISOString();
+  try {
+    const { email, otp } = await context.request.json();
 
-  const user = await env.DB.prepare("SELECT * FROM users WHERE email = ? AND otp_code = ? AND otp_expiry > ?")
-    .bind(email, otp, now).first();
+    // 1. GET code from KV Database
+    const storedOtp = await context.env.KV_DATA.get(email);
 
-  if (!user) return new Response(JSON.stringify({ error: "Fail" }), { status: 401 });
+    // 2. COMPARE
+    if (storedOtp && storedOtp === otp) {
+      // Success: Delete code so it can't be used twice
+      await context.env.KV_DATA.delete(email);
+      return new Response(JSON.stringify({ success: true }), {
+        headers: { 'Content-Type': 'application/json' }
+      });
+    } else {
+      return new Response(JSON.stringify({ success: false, error: "Invalid or expired code" }), { status: 401 });
+    }
 
-  await env.DB.prepare("UPDATE users SET otp_code = NULL WHERE email = ?").bind(email).run();
-
-  return new Response(JSON.stringify({ success: true, name: user.name, last_service: user.last_service }), { headers: {"Content-Type":"application/json"} });
+  } catch (err) {
+    return new Response(JSON.stringify({ error: err.message }), { status: 500 });
+  }
 }
