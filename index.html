@@ -43,7 +43,7 @@
             </p>
             <div class="flex flex-col md:flex-row justify-center gap-4">
                 <a href="#services" class="btn-gold px-8 py-4 rounded-xl text-emerald-900 font-bold">Explore Our Services</a>
-                <button onclick="loadAdminOrders()" class="px-8 py-4 rounded-xl border border-white/20 hover:bg-white/10 transition-all font-bold">Admin Panel</button>
+                <button onclick="showLogin()" class="px-8 py-4 rounded-xl border border-white/20 hover:bg-white/10 transition-all font-bold">Access Portal</button>
             </div>
         </div>
     </header>
@@ -59,36 +59,26 @@
                     <h4 class="text-2xl font-bold mb-4 group-hover:text-sky-400 transition-colors">IT & Cloud Solutions</h4>
                     <p class="text-slate-400 leading-relaxed mb-6">Scaleable networking and mission-critical web operations.</p>
                 </div>
-                <div class="glass-card p-8 rounded-3xl group hover:border-[#D4AF37]/50 transition-all" data-aos="fade-left">
-                    <h4 class="text-2xl font-bold mb-4 group-hover:text-[#D4AF37] transition-colors">Graphic Design</h4>
-                    <p class="text-slate-400 leading-relaxed">Visual identities that command attention.</p>
-                </div>
             </div>
         </section>
     </main>
 
-    <section id="admin-dashboard" class="hidden max-w-6xl mx-auto py-20 px-6" data-aos="fade-up">
+    <section id="admin-dashboard" class="hidden max-w-6xl mx-auto py-20 px-6">
         <div class="glass-card rounded-[2.5rem] p-10 border-red-500/20">
             <div class="flex justify-between items-center mb-10 border-b border-white/10 pb-8">
-                <div>
-                    <h2 class="text-3xl font-bold gold-text">Management Console</h2>
-                    <p class="text-slate-500 text-sm mt-1">Reviewing incoming project requests and service inquiries.</p>
-                </div>
-                <button onclick="location.reload()" class="px-6 py-2 bg-white/5 border border-white/10 rounded-xl text-xs font-bold hover:bg-white/10 transition-all">Close Admin</button>
+                <h2 class="text-3xl font-bold gold-text">Management Console</h2>
+                <button onclick="location.href='/'" class="px-6 py-2 bg-white/5 border border-white/10 rounded-xl text-xs font-bold hover:bg-white/10 transition-all">Exit Admin</button>
             </div>
-
             <div class="overflow-x-auto">
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="border-b border-white/10 text-slate-500 text-[10px] uppercase tracking-widest font-black">
                             <th class="p-4">Client Contact</th>
                             <th class="p-4">Service</th>
-                            <th class="p-4">Details / Requirements</th>
-                            <th class="p-4">Timestamp</th>
+                            <th class="p-4">Details</th>
                         </tr>
                     </thead>
-                    <tbody id="admin-orders-body" class="divide-y divide-white/5">
-                        </tbody>
+                    <tbody id="admin-orders-body" class="divide-y divide-white/5"></tbody>
                 </table>
             </div>
         </div>
@@ -102,55 +92,47 @@
     <script>
         AOS.init({ duration: 1000, once: true });
 
-        // ADMIN LOGIC: Fetch and display data from your backend
+        // URL METHOD: Check for ?view=admin on page load
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('view') === 'admin') {
+                loadAdminOrders();
+            }
+        };
+
         async function loadAdminOrders() {
             try {
-                // Hide main content and hero
                 document.getElementById('main-content').classList.add('hidden');
                 document.getElementById('hero-header').classList.add('hidden');
                 document.getElementById('admin-dashboard').classList.remove('hidden');
 
-                const res = await fetch('/admin-get-orders'); // Your backend endpoint
+                const res = await fetch('/admin-get-orders'); // Fetching raw backend data
                 const orders = await res.json();
                 const tbody = document.getElementById('admin-orders-body');
                 tbody.innerHTML = "";
                 
                 if (!orders || orders.length === 0) {
-                    tbody.innerHTML = "<tr><td colspan='4' class='p-20 text-center text-slate-500 font-medium'>No active orders found in the database.</td></tr>";
+                    tbody.innerHTML = "<tr><td colspan='3' class='p-20 text-center text-slate-500'>No active orders.</td></tr>";
                     return;
                 }
 
                 orders.forEach(order => {
                     tbody.innerHTML += `
-                        <tr class="hover:bg-white/5 transition-all group">
-                            <td class="p-4">
-                                <div class="font-bold text-slate-200">${order.name || 'N/A'}</div>
-                                <div class="text-xs text-slate-500">${order.email}</div>
-                            </td>
-                            <td class="p-4">
-                                <span class="px-3 py-1 bg-sky-500/10 text-sky-400 rounded-full text-[10px] font-bold uppercase border border-sky-500/20">
-                                    ${order.service}
-                                </span>
-                            </td>
-                            <td class="p-4 text-slate-400 text-xs leading-relaxed max-w-md">
-                                ${order.details || 'No specific requirements provided.'}
-                            </td>
-                            <td class="p-4 text-slate-600 text-[10px] font-mono">
-                                ${new Date().toLocaleDateString()}
-                            </td>
+                        <tr class="hover:bg-white/5 transition-all">
+                            <td class="p-4 text-sm font-bold text-slate-200">${order.email}</td>
+                            <td class="p-4"><span class="text-sky-400 text-[10px] font-bold uppercase">${order.service}</span></td>
+                            <td class="p-4 text-slate-400 text-xs">${order.details || 'N/A'}</td>
                         </tr>`;
                 });
             } catch (err) {
-                console.error("Admin Load Error:", err);
-                alert("Failed to load management data. Ensure you are authorized.");
+                console.error("Access error");
             }
         }
 
         function showLogin() {
             document.getElementById('main-content').classList.add('hidden');
             document.getElementById('hero-header').classList.add('hidden');
-            document.getElementById('login-section').classList.remove('hidden');
-            window.scrollTo(0, 0);
+            // ... existing login logic
         }
     </script>
 </body>
