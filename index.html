@@ -73,6 +73,33 @@
                 </div>
             </div>
         </section>
+
+        <section id="research" class="bg-slate-900 py-24 px-6 border-y border-white/5">
+            <div class="max-w-5xl mx-auto flex flex-col md:flex-row items-center gap-12">
+                <div class="md:w-1/2" data-aos="fade-right">
+                    <h3 class="text-4xl font-bold mb-6 tracking-tight">Islamic <span class="gold-text">Research</span></h3>
+                    <p class="text-slate-400 mb-8 leading-relaxed">We provide academic-grade verification of religious facts and meticulous historical timelines, serving as a bridge between tradition and digital clarity.</p>
+                    <div class="space-y-4">
+                        <div class="flex items-start gap-4">
+                            <div class="mt-1 h-5 w-5 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-500">✓</div>
+                            <p class="text-slate-300">Verification of Hadith and Historical Narration.</p>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div class="mt-1 h-5 w-5 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-500">✓</div>
+                            <p class="text-slate-300">Deep-dive Historical Whitepapers.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="md:w-1/2 glass-card p-1 rounded-3xl" data-aos="flip-left">
+                    <div class="bg-emerald-950/40 p-8 rounded-[1.4rem] border border-emerald-500/10">
+                        <div class="text-5xl font-serif text-[#D4AF37] opacity-20 mb-4">“</div>
+                        <p class="text-emerald-100 italic text-lg leading-relaxed">
+                            Our research methodology ensures that every fact is anchored in verified sources, providing peace of mind in a digital age of misinformation.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
 
     <section id="login-section" class="hidden max-w-lg mx-auto my-20 p-10 glass-card rounded-[2rem] shadow-2xl relative overflow-hidden" data-aos="zoom-in">
@@ -109,7 +136,7 @@
                     <h4 class="text-xl font-bold group-hover:text-sky-400">IT Solutions</h4>
                 </button>
                 <button onclick="selectService('Research')" class="p-8 bg-white/5 border border-white/10 rounded-3xl hover:border-emerald-400 transition-all group">
-                    <h4 class="text-xl font-bold group-hover:text-emerald-400">Research</h4>
+                    <h4 class="text-xl font-bold group-hover:text-emerald-400 text-emerald-100">Research</h4>
                 </button>
             </div>
 
@@ -121,8 +148,8 @@
             <div id="order-form-area" class="hidden mt-12 space-y-6 max-w-2xl">
                 <h3 class="text-xl font-bold border-b border-white/10 pb-2">Project Requirements</h3>
                 <div class="space-y-4">
-                    <input type="text" id="color-scheme" placeholder="Preferred Style/Colors (e.g., Minimalist, Emerald & Gold)" class="w-full p-4 bg-white/5 border border-white/10 rounded-xl outline-none focus:border-[#D4AF37]">
-                    <textarea id="custom-instructions" placeholder="Tell us more about your project needs..." class="w-full p-4 bg-white/5 border border-white/10 rounded-xl h-32 outline-none focus:border-[#D4AF37]"></textarea>
+                    <input type="text" id="color-scheme" placeholder="Preferred Style/Colors" class="w-full p-4 bg-white/5 border border-white/10 rounded-xl outline-none focus:border-[#D4AF37]">
+                    <textarea id="custom-instructions" placeholder="Detailed instructions..." class="w-full p-4 bg-white/5 border border-white/10 rounded-xl h-32 outline-none focus:border-[#D4AF37]"></textarea>
                 </div>
                 <button onclick="submitProjectOrder()" class="btn-gold w-full py-4 rounded-xl text-emerald-950 font-black">Submit Request</button>
             </div>
@@ -141,9 +168,9 @@
         let currentSubService = "";
 
         const servicesData = {
-            "Graphics": ["Logo Design", "Business Card", "Social Media Branding", "Poster/Flyer"],
-            "IT": ["Network Configuration", "Web Hosting", "Windows Administration", "Cloud Setup"],
-            "Research": ["Fact Verification", "Historical Paper", "Topic Research", "Citation Audit"]
+            "Graphics": ["Logo Design", "Business Card", "Branding Kit", "Flyer/Poster"],
+            "IT": ["Network Config", "Web Hosting", "Windows Admin", "Cloud Infrastructure"],
+            "Research": ["Fact Verification", "Historical Timeline", "Source Audit", "Literature Review"]
         };
 
         function showLogin() {
@@ -157,75 +184,13 @@
             try {
                 userEmail = document.getElementById('login-email').value;
                 const name = document.getElementById('login-name').value;
+                if (!userEmail || !name) { alert("Please enter both Name and Email."); return; }
+                
                 const btn = document.querySelector("#email-step button");
-                if (!userEmail || !name) { alert("Please fill in all fields."); return; }
-                btn.innerText = "Initializing...";
+                btn.innerText = "Processing...";
                 btn.disabled = true;
 
                 const res = await fetch('/send-otp', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email: userEmail, name: name })
-                });
-
-                if (res.ok) {
-                    document.getElementById('email-step').classList.add('hidden');
-                    document.getElementById('otp-step').classList.remove('hidden');
-                } else { throw new Error("Failed to send code"); }
-            } catch (err) { alert(err.message); }
-        }
-
-        async function verifyOTP() {
-            try {
-                const otp = document.getElementById('login-otp').value;
-                const res = await fetch('/verify-otp', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email: userEmail, otp: otp })
-                });
-                const data = await res.json();
-                if (res.ok && data.success) {
-                    document.getElementById('login-section').classList.add('hidden');
-                    document.getElementById('dashboard').classList.remove('hidden');
-                    document.getElementById('user-name').innerText = document.getElementById('login-name').value;
-                } else { alert("Invalid Security Code"); }
-            } catch (err) { alert("Verification failure."); }
-        }
-
-        function selectService(service) {
-            currentService = service;
-            document.getElementById('selected-main-title').innerText = service + " Options";
-            const optionsContainer = document.getElementById('sub-service-options');
-            optionsContainer.innerHTML = "";
-            servicesData[service].forEach(sub => {
-                optionsContainer.innerHTML += `<button onclick="selectSubService('${sub}')" class="p-4 bg-white/5 border border-white/10 rounded-xl hover:border-[#D4AF37] transition-all">${sub}</button>`;
-            });
-            document.getElementById('sub-service-area').classList.remove('hidden');
-            document.getElementById('order-form-area').classList.add('hidden');
-        }
-
-        function selectSubService(sub) {
-            currentSubService = sub;
-            document.getElementById('order-form-area').classList.remove('hidden');
-            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-        }
-
-        async function submitProjectOrder() {
-            const details = document.getElementById('color-scheme').value;
-            const instructions = document.getElementById('custom-instructions').value;
-            const res = await fetch('/submit-order', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    email: userEmail,
-                    service: currentService,
-                    subService: currentSubService,
-                    details: details,
-                    instructions: instructions
-                })
-            });
-            if (res.ok) { alert("Project Request Submitted Successfully!"); location.reload(); }
-        }
-    </script>
-</body>
-</html>
+                    body: JSON.stringify({ email: userEmail, name:
