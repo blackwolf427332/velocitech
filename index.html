@@ -62,11 +62,6 @@
                     </div>
                     <h4 class="text-2xl font-bold mb-4 group-hover:text-sky-400 transition-colors">IT & Cloud Solutions</h4>
                     <p class="text-slate-400 leading-relaxed mb-6">Scaleable networking, robust Windows environments, and mission-critical web operations tailored for modern enterprises.</p>
-                    <ul class="text-sm space-y-2 text-slate-500">
-                        <li>• Network Architecture & Security</li>
-                        <li>• Enterprise Windows Management</li>
-                        <li>• Web Operations & Hosting</li>
-                    </ul>
                 </div>
 
                 <div class="glass-card p-8 rounded-3xl group hover:border-[#D4AF37]/50 transition-all" data-aos="fade-left">
@@ -78,120 +73,78 @@
                 </div>
             </div>
         </section>
-
-        <section id="research" class="bg-slate-900 py-24 px-6 border-y border-white/5">
-            <div class="max-w-5xl mx-auto flex flex-col md:flex-row items-center gap-12">
-                <div class="md:w-1/2" data-aos="fade-right">
-                    <h3 class="text-4xl font-bold mb-6 tracking-tight">Islamic <span class="gold-text">Research</span></h3>
-                    <p class="text-slate-400 mb-8 leading-relaxed">We provide academic-grade verification of religious facts and meticulous historical timelines, serving as a bridge between tradition and digital clarity.</p>
-                    <div class="space-y-4">
-                        <div class="flex items-start gap-4">
-                            <div class="mt-1 h-5 w-5 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-500">✓</div>
-                            <p class="text-slate-300">Verification of Hadith and Historical Narration.</p>
-                        </div>
-                        <div class="flex items-start gap-4">
-                            <div class="mt-1 h-5 w-5 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-500">✓</div>
-                            <p class="text-slate-300">Deep-dive Historical Whitepapers.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="md:w-1/2 glass-card p-1 rounded-3xl" data-aos="flip-left">
-                    <div class="bg-emerald-950/40 p-8 rounded-[1.4rem] border border-emerald-500/10">
-                        <div class="text-5xl font-serif text-[#D4AF37] opacity-20 mb-4">“</div>
-                        <p class="text-emerald-100 italic text-lg leading-relaxed">
-                            Our research methodology ensures that every fact is anchored in verified sources, providing peace of mind in a digital age of misinformation.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
     </main>
 
     <section id="login-section" class="hidden max-w-lg mx-auto my-20 p-10 glass-card rounded-[2rem] shadow-2xl relative overflow-hidden" data-aos="zoom-in">
-        <div class="absolute top-0 right-0 -mt-4 -mr-4 h-24 w-24 bg-[#D4AF37]/10 blur-3xl rounded-full"></div>
         <h3 class="text-3xl font-bold text-white mb-2">Secure Portal</h3>
-        <p class="text-slate-400 mb-8">Enter your credentials to access your consultancy dashboard.</p>
+        <p class="text-slate-400 mb-8">Enter your credentials to access your dashboard.</p>
         
         <div id="email-step" class="space-y-4">
-            <div class="space-y-1">
-                <label class="text-xs font-bold uppercase text-slate-500 ml-1">Full Name</label>
-                <input type="text" id="login-name" placeholder="John Doe" class="w-full p-4 bg-white/5 border border-white/10 rounded-xl outline-none focus:border-[#D4AF37] transition-all">
-            </div>
-            <div class="space-y-1">
-                <label class="text-xs font-bold uppercase text-slate-500 ml-1">Email Address</label>
-                <input type="email" id="login-email" placeholder="name@company.com" class="w-full p-4 bg-white/5 border border-white/10 rounded-xl outline-none focus:border-[#D4AF37] transition-all">
-            </div>
-            <div class="space-y-1">
-                <label class="text-xs font-bold uppercase text-slate-500 ml-1">Service Category</label>
-                <select id="login-service" class="w-full p-4 bg-white/5 border border-white/10 rounded-xl text-slate-400 outline-none focus:border-[#D4AF37]">
-                    <option value="" class="bg-slate-900">Select Interest</option>
-                    <option value="IT Services" class="bg-slate-900">IT & Infrastructure</option>
-                    <option value="Graphics" class="bg-slate-900">Graphics & Branding</option>
-                    <option value="Research" class="bg-slate-900">Islamic Research</option>
-                </select>
-            </div>
-            <button onclick="sendOTP()" class="w-full py-4 btn-gold text-emerald-950 font-extrabold rounded-xl mt-4 shadow-lg">Request Access Code</button>
+            <input type="text" id="login-name" placeholder="Full Name" class="w-full p-4 bg-white/5 border border-white/10 rounded-xl outline-none focus:border-[#D4AF37] transition-all">
+            <input type="email" id="login-email" placeholder="Email Address" class="w-full p-4 bg-white/5 border border-white/10 rounded-xl outline-none focus:border-[#D4AF37] transition-all">
+            <button onclick="sendOTP()" class="w-full py-4 btn-gold text-emerald-950 font-extrabold rounded-xl mt-4">Request Access Code</button>
         </div>
 
         <div id="otp-step" class="hidden space-y-6">
-            <div class="text-center">
-                <p class="text-sm text-emerald-400 mb-4">Code sent to your inbox!</p>
-                <input type="text" id="login-otp" placeholder="••••••" class="w-full p-4 tracking-[0.5em] text-center font-bold text-3xl bg-white/5 border border-[#D4AF37] rounded-xl mb-4">
-            </div>
-            <button onclick="verifyOTP()" class="w-full py-4 bg-white text-slate-900 font-extrabold rounded-xl hover:bg-slate-200 transition-all">Verify & Enter Dashboard</button>
+            <input type="text" id="login-otp" placeholder="••••••" class="w-full p-4 tracking-[0.5em] text-center font-bold text-3xl bg-white/5 border border-[#D4AF37] rounded-xl mb-4">
+            <button onclick="verifyOTP()" class="w-full py-4 bg-white text-slate-900 font-extrabold rounded-xl">Verify & Enter Dashboard</button>
         </div>
     </section>
 
     <section id="dashboard" class="hidden max-w-5xl mx-auto py-20 px-6" data-aos="fade-up">
         <div class="glass-card rounded-[2.5rem] p-10 border-[#D4AF37]/20">
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-10 border-b border-white/10 pb-8">
+            <div class="flex justify-between items-center mb-10 border-b border-white/10 pb-8">
                 <div>
                     <h2 class="text-3xl font-bold">Assalam-o-Alaikum, <span id="user-name" class="gold-text">Client</span></h2>
-                    <p class="text-slate-500 text-sm mt-1">Welcome to your secure project environment.</p>
+                    <p class="text-slate-500 text-sm mt-1">Select a service to begin your project.</p>
                 </div>
-                <button onclick="location.reload()" class="px-4 py-2 bg-red-500/10 text-red-500 rounded-lg text-xs font-bold border border-red-500/20 hover:bg-red-500 hover:text-white transition-all">Logout Session</button>
+                <button onclick="location.reload()" class="px-4 py-2 bg-red-500/10 text-red-500 rounded-lg text-xs font-bold border border-red-500/20">Logout</button>
             </div>
             
-            <div class="grid md:grid-cols-2 gap-8 mb-10">
-                <div class="p-6 bg-white/5 rounded-2xl border border-white/5">
-                    <p class="text-[10px] text-slate-500 font-black uppercase tracking-widest mb-2">Active Track</p>
-                    <p id="user-service" class="text-2xl font-bold text-sky-400">Consultation</p>
-                </div>
-                <div class="p-6 bg-white/5 rounded-2xl border border-white/5">
-                    <p class="text-[10px] text-slate-500 font-black uppercase tracking-widest mb-2">Membership Status</p>
-                    <p class="text-2xl font-bold text-emerald-500">Research Tier</p>
-                </div>
+            <div id="service-selection" class="grid md:grid-cols-3 gap-6">
+                <button onclick="selectService('Graphics')" class="p-8 bg-white/5 border border-white/10 rounded-3xl hover:border-[#D4AF37] transition-all group">
+                    <h4 class="text-xl font-bold group-hover:text-[#D4AF37]">Graphics</h4>
+                </button>
+                <button onclick="selectService('IT')" class="p-8 bg-white/5 border border-white/10 rounded-3xl hover:border-sky-400 transition-all group">
+                    <h4 class="text-xl font-bold group-hover:text-sky-400">IT Solutions</h4>
+                </button>
+                <button onclick="selectService('Research')" class="p-8 bg-white/5 border border-white/10 rounded-3xl hover:border-emerald-400 transition-all group">
+                    <h4 class="text-xl font-bold group-hover:text-emerald-400">Research</h4>
+                </button>
             </div>
 
-            <div class="space-y-6">
-                <h3 class="font-bold flex items-center gap-2">
-                    <span class="h-2 w-2 bg-[#D4AF37] rounded-full"></span>
-                    Recent Activity Logs
-                </h3>
-                <div id="research-list" class="bg-black/20 p-6 rounded-2xl space-y-4 border border-white/5">
-                    <div class="flex justify-between items-center text-sm border-b border-white/5 pb-2">
-                        <span class="text-slate-400 italic">Session initialized</span>
-                        <span class="text-slate-600 text-xs">Just Now</span>
-                    </div>
+            <div id="sub-service-area" class="hidden mt-12">
+                <h3 class="text-2xl font-bold mb-6 gold-text" id="selected-main-title">Options</h3>
+                <div id="sub-service-options" class="grid grid-cols-2 md:grid-cols-3 gap-4"></div>
+            </div>
+
+            <div id="order-form-area" class="hidden mt-12 space-y-6 max-w-2xl">
+                <h3 class="text-xl font-bold border-b border-white/10 pb-2">Project Requirements</h3>
+                <div class="space-y-4">
+                    <input type="text" id="color-scheme" placeholder="Preferred Style/Colors (e.g., Minimalist, Emerald & Gold)" class="w-full p-4 bg-white/5 border border-white/10 rounded-xl outline-none focus:border-[#D4AF37]">
+                    <textarea id="custom-instructions" placeholder="Tell us more about your project needs..." class="w-full p-4 bg-white/5 border border-white/10 rounded-xl h-32 outline-none focus:border-[#D4AF37]"></textarea>
                 </div>
+                <button onclick="submitProjectOrder()" class="btn-gold w-full py-4 rounded-xl text-emerald-950 font-black">Submit Request</button>
             </div>
         </div>
     </section>
 
     <footer class="border-t border-white/5 py-12 text-center text-slate-600">
-        <div class="mb-6 flex justify-center space-x-6">
-            <a href="https://www.facebook.com/profile.php?id=61568687456918" class="hover:text-[#D4AF37]">Facebook</a>
-            <a href="https://wa.link/k450ik" class="hover:text-[#D4AF37]">Whatsapp</a>
-            <a href="mailto:reach.ahitgs@hotmail.com?cc=alhaseeb2006@gmail.com&subject=inquiry%20about%20your%20services&body=salam'un%20aliykom%20%0Ai%20would%20like%20to%20get%20info%20about%20your%20services" class="hover:text-[#D4AF37]">Mail</a>
-        </div>
-        <p class="text-xs uppercase tracking-widest font-bold font-mono">&copy; 2026 AH IT & Research Group. Engineered for Excellence.</p>
+        <p class="text-xs uppercase tracking-widest font-bold font-mono">&copy; 2026 AHITGS Group. Engineered for Excellence.</p>
     </footer>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
         AOS.init({ duration: 1000, once: true });
-
         let userEmail = "";
+        let currentService = "";
+        let currentSubService = "";
+
+        const servicesData = {
+            "Graphics": ["Logo Design", "Business Card", "Social Media Branding", "Poster/Flyer"],
+            "IT": ["Network Configuration", "Web Hosting", "Windows Administration", "Cloud Setup"],
+            "Research": ["Fact Verification", "Historical Paper", "Topic Research", "Citation Audit"]
+        };
 
         function showLogin() {
             document.getElementById('main-content').classList.add('hidden');
@@ -204,60 +157,74 @@
             try {
                 userEmail = document.getElementById('login-email').value;
                 const name = document.getElementById('login-name').value;
-                const service = document.getElementById('login-service').value;
                 const btn = document.querySelector("#email-step button");
-
-                if (!userEmail) { alert("Please enter your email."); return; }
-
-                btn.innerText = "Initializing Security...";
+                if (!userEmail || !name) { alert("Please fill in all fields."); return; }
+                btn.innerText = "Initializing...";
                 btn.disabled = true;
 
                 const res = await fetch('/send-otp', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email: userEmail, name: name, service: service })
+                    body: JSON.stringify({ email: userEmail, name: name })
                 });
 
                 if (res.ok) {
                     document.getElementById('email-step').classList.add('hidden');
                     document.getElementById('otp-step').classList.remove('hidden');
-                } else {
-                    const data = await res.json();
-                    throw new Error(data.error || "Network error");
-                }
-            } catch (err) {
-                alert("Access Denied: " + err.message);
-                const btn = document.querySelector("#email-step button");
-                btn.innerText = "Request Access Code";
-                btn.disabled = false;
-            }
+                } else { throw new Error("Failed to send code"); }
+            } catch (err) { alert(err.message); }
         }
 
         async function verifyOTP() {
             try {
                 const otp = document.getElementById('login-otp').value;
-                const nameInput = document.getElementById('login-name').value || "Consultant";
-                const serviceInput = document.getElementById('login-service').value || "Active Engagement";
-
                 const res = await fetch('/verify-otp', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email: userEmail, otp: otp })
                 });
-
                 const data = await res.json();
-
                 if (res.ok && data.success) {
                     document.getElementById('login-section').classList.add('hidden');
                     document.getElementById('dashboard').classList.remove('hidden');
-                    document.getElementById('user-name').innerText = nameInput;
-                    document.getElementById('user-service').innerText = serviceInput;
-                } else {
-                    alert("Invalid Security Code");
-                }
-            } catch (err) {
-                alert("Verification failure.");
-            }
+                    document.getElementById('user-name').innerText = document.getElementById('login-name').value;
+                } else { alert("Invalid Security Code"); }
+            } catch (err) { alert("Verification failure."); }
+        }
+
+        function selectService(service) {
+            currentService = service;
+            document.getElementById('selected-main-title').innerText = service + " Options";
+            const optionsContainer = document.getElementById('sub-service-options');
+            optionsContainer.innerHTML = "";
+            servicesData[service].forEach(sub => {
+                optionsContainer.innerHTML += `<button onclick="selectSubService('${sub}')" class="p-4 bg-white/5 border border-white/10 rounded-xl hover:border-[#D4AF37] transition-all">${sub}</button>`;
+            });
+            document.getElementById('sub-service-area').classList.remove('hidden');
+            document.getElementById('order-form-area').classList.add('hidden');
+        }
+
+        function selectSubService(sub) {
+            currentSubService = sub;
+            document.getElementById('order-form-area').classList.remove('hidden');
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+
+        async function submitProjectOrder() {
+            const details = document.getElementById('color-scheme').value;
+            const instructions = document.getElementById('custom-instructions').value;
+            const res = await fetch('/submit-order', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    email: userEmail,
+                    service: currentService,
+                    subService: currentSubService,
+                    details: details,
+                    instructions: instructions
+                })
+            });
+            if (res.ok) { alert("Project Request Submitted Successfully!"); location.reload(); }
         }
     </script>
 </body>
