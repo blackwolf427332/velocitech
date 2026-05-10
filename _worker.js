@@ -132,7 +132,7 @@ async function sendOTPEmail(env, { to, name, code, service }) {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      sender:      { name: 'AHITGS Portal', email: 'reach.ahitgs@hotmail.com' },
+      sender:      { name: 'AHITGS Portal', email: 'alhaseeb2006@gmail.com' },
       to:          [{ email: to, name }],
       subject:     `${code} — Your AHITGS Access Code`,
       htmlContent: html,
@@ -159,7 +159,7 @@ async function notifyAdmin(env, { name, email, service, subservice, description 
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      sender:      { name: 'AHITGS Portal', email: 'reach.ahitgs@hotmail.com' },
+      sender:      { name: 'AHITGS Portal', email: 'alhaseeb2006@gmail.com' },
       to:          [{ email: env.ADMIN_EMAIL }],
       subject:     `New Request — ${name} (${service})`,
       htmlContent: `
