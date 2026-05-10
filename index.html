@@ -1,139 +1,1111 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AHITGS | IT, Graphics & Research</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    
-    <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #020617; }
-        .gold-text { background: linear-gradient(to right, #D4AF37, #F5E3A6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .glass-card { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
-        .emerald-gradient { background: radial-gradient(circle at top, #064E3B 0%, #020617 100%); }
-        .nav-blur { backdrop-filter: blur(15px); background: rgba(2, 6, 23, 0.8); }
-        .btn-gold { background: linear-gradient(135deg, #D4AF37 0%, #B8860B 100%); transition: transform 0.2s; }
-        .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(212, 175, 55, 0.2); }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AHITGS | IT, Graphics & Research Group</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gold: #C9963F;
+      --gold-light: #E8C97A;
+      --emerald: #0D5C41;
+      --emerald-light: #16A374;
+      --bg: #060A14;
+      --border: rgba(255,255,255,0.07);
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background-color: var(--bg);
+      color: #D8D3C8;
+      overflow-x: hidden;
+      margin: 0;
+    }
+
+    /* Noise overlay */
+    body::after {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      opacity: 0.5; pointer-events: none; z-index: 9999;
+    }
+
+    /* Typography */
+    .display { font-family: 'Cormorant Garamond', serif; }
+
+    .gold-text {
+      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Shimmer animation */
+    @keyframes shimmer {
+      0%,100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+    .shimmer-gold {
+      background: linear-gradient(270deg, #A0722A, var(--gold), var(--gold-light), #F5E3A6, var(--gold));
+      background-size: 300% 300%;
+      animation: shimmer 5s ease infinite;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+
+    /* Scroll reveal system — replaces AOS entirely */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.75s cubic-bezier(0.22,1,0.36,1), transform 0.75s cubic-bezier(0.22,1,0.36,1);
+    }
+    .reveal.left  { transform: translateX(-30px); }
+    .reveal.right { transform: translateX(30px); }
+    .reveal.scale { transform: scale(0.93); }
+    .reveal.visible { opacity: 1; transform: none; }
+    .d1 { transition-delay: 0.1s; }
+    .d2 { transition-delay: 0.2s; }
+    .d3 { transition-delay: 0.3s; }
+    .d4 { transition-delay: 0.45s; }
+
+    /* Glass */
+    .glass {
+      background: rgba(255,255,255,0.028);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--border);
+    }
+
+    /* Nav */
+    .nav-glass {
+      background: rgba(6,10,20,0.88);
+      backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* Buttons */
+    .btn-gold {
+      background: linear-gradient(135deg, var(--gold), #A0722A);
+      color: #060A14; font-weight: 700; border: none; cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 14px 36px rgba(201,150,63,0.35); }
+    .btn-ghost {
+      border: 1px solid rgba(255,255,255,0.12); background: transparent;
+      color: #D8D3C8; cursor: pointer;
+      transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+    }
+    .btn-ghost:hover { border-color: var(--gold); color: var(--gold); background: rgba(201,150,63,0.06); }
+
+    /* Hero */
+    .hero-bg {
+      background:
+        radial-gradient(ellipse 90% 70% at 50% -10%, rgba(13,92,65,0.35) 0%, transparent 65%),
+        radial-gradient(ellipse 50% 40% at 85% 60%, rgba(201,150,63,0.05) 0%, transparent 60%),
+        var(--bg);
+    }
+    .geo-pattern {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='72'%3E%3Cg fill='none' stroke='%23C9963F' stroke-width='0.35' opacity='0.12'%3E%3Cpolygon points='36,2 70,19 70,53 36,70 2,53 2,19'/%3E%3Cpolygon points='36,11 62,25 62,47 36,61 10,47 10,25'/%3E%3Cline x1='36' y1='2' x2='36' y2='11'/%3E%3Cline x1='70' y1='19' x2='62' y2='25'/%3E%3Cline x1='70' y1='53' x2='62' y2='47'/%3E%3Cline x1='36' y1='70' x2='36' y2='61'/%3E%3Cline x1='2' y1='53' x2='10' y2='47'/%3E%3Cline x1='2' y1='19' x2='10' y2='25'/%3E%3C/g%3E%3C/svg%3E");
+      background-size: 72px 72px;
+    }
+
+    /* Service cards */
+    .service-card {
+      transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .service-card:hover {
+      border-color: rgba(201,150,63,0.35) !important;
+      transform: translateY(-5px);
+      box-shadow: 0 28px 56px rgba(0,0,0,0.5);
+    }
+
+    /* Mobile menu */
+    #mobile-menu { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.22,1,0.36,1); }
+    #mobile-menu.open { max-height: 360px; }
+
+    /* Modal */
+    .modal-overlay { opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+    .modal-overlay.active { opacity: 1; pointer-events: all; }
+    .modal-card { transform: translateY(22px) scale(0.97); transition: transform 0.35s cubic-bezier(0.22,1,0.36,1); }
+    .modal-overlay.active .modal-card { transform: none; }
+
+    /* Form inputs */
+    .form-input {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.09);
+      color: #D8D3C8;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .form-input:focus { outline: none; border-color: var(--gold); background: rgba(201,150,63,0.05); }
+    .form-input::placeholder { color: rgba(216,211,200,0.28); }
+    select.form-input option { background: #0F1629; }
+
+    /* Spinner */
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spin { animation: spin 0.75s linear infinite; display: inline-block; }
+
+    /* Status badge */
+    .badge { font-size: 10px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; padding: 2px 8px; border-radius: 999px; }
+
+    /* Gold animated line */
+    @keyframes line-grow { from { width: 0; opacity: 0; } to { width: 4rem; opacity: 1; } }
+    .gold-line { height: 2px; background: linear-gradient(to right, var(--gold), transparent); animation: line-grow 0.9s cubic-bezier(0.22,1,0.36,1) 0.4s both; }
+
+    /* Scroll indicator bob */
+    @keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(6px); } }
+    .bob { animation: bob 2.5s ease-in-out infinite; }
+
+    /* Pulse dot */
+    @keyframes pulse-dot { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+    .pulse-dot { animation: pulse-dot 1.8s ease-in-out infinite; }
+
+    /* Contact card hover */
+    .contact-card { transition: border-color 0.2s, background 0.2s, transform 0.2s; }
+    .contact-card:hover { transform: translateX(4px); }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: rgba(201,150,63,0.25); border-radius: 4px; }
+  </style>
 </head>
-<body class="text-slate-200">
+<body>
 
-    <nav class="nav-blur text-white p-5 sticky top-0 z-50 border-b border-white/10">
-        <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <h1 class="font-extrabold text-2xl tracking-tighter">AH <span class="gold-text">ITGS</span></h1>
-            <div class="hidden md:flex space-x-8 text-sm font-semibold tracking-wide uppercase">
-                <a href="#services" class="hover:text-[#D4AF37] transition-colors">Services</a>
-                <a href="#research" class="hover:text-[#D4AF37] transition-colors">Research</a>
-                <button onclick="showLogin()" class="btn-gold px-5 py-2 rounded-full text-emerald-950 font-bold text-xs">Client Portal</button>
-            </div>
+<!-- ══════════════════════════════════════
+     NAVIGATION
+══════════════════════════════════════ -->
+<nav class="nav-glass sticky top-0 z-50" style="position:relative;z-index:50;">
+  <div class="max-w-7xl mx-auto px-5 py-4 flex items-center justify-between">
+
+    <!-- Logo -->
+    <a href="#" class="flex items-center gap-3 group">
+      <div class="h-9 w-9 rounded-xl flex items-center justify-center flex-shrink-0" style="background:linear-gradient(135deg,rgba(201,150,63,0.18),rgba(13,92,65,0.18));border:1px solid rgba(201,150,63,0.28);">
+        <span class="display text-[var(--gold)] font-bold text-lg leading-none select-none">A</span>
+      </div>
+      <span class="font-bold text-[1.15rem] tracking-tight text-white">AH<span class="gold-text">ITGS</span></span>
+    </a>
+
+    <!-- Desktop links -->
+    <div class="hidden md:flex items-center gap-8">
+      <a href="#services" class="text-sm font-medium text-slate-400 hover:text-[var(--gold)] transition-colors duration-200 tracking-wide">Services</a>
+      <a href="#research" class="text-sm font-medium text-slate-400 hover:text-[var(--gold)] transition-colors duration-200 tracking-wide">Research</a>
+      <a href="#about"    class="text-sm font-medium text-slate-400 hover:text-[var(--gold)] transition-colors duration-200 tracking-wide">About</a>
+      <a href="#contact"  class="text-sm font-medium text-slate-400 hover:text-[var(--gold)] transition-colors duration-200 tracking-wide">Contact</a>
+      <button onclick="openPortal()" class="btn-gold px-5 py-2.5 rounded-full text-sm">Client Portal</button>
+    </div>
+
+    <!-- Mobile hamburger -->
+    <button id="menu-btn" onclick="toggleMenu()" class="md:hidden p-2 flex flex-col gap-[5px]" aria-label="Menu">
+      <span id="hb1" class="block h-[2px] w-6 bg-slate-300 rounded transition-all duration-300 origin-center"></span>
+      <span id="hb2" class="block h-[2px] w-6 bg-slate-300 rounded transition-all duration-300"></span>
+      <span id="hb3" class="block h-[2px] w-4 bg-slate-300 rounded transition-all duration-300 ml-auto origin-center"></span>
+    </button>
+  </div>
+
+  <!-- Mobile menu -->
+  <div id="mobile-menu" class="md:hidden border-t border-white/5">
+    <div class="px-6 py-5 flex flex-col gap-5">
+      <a href="#services" onclick="closeMenu()" class="text-sm font-medium text-slate-300 hover:text-[var(--gold)] transition-colors">Services</a>
+      <a href="#research" onclick="closeMenu()" class="text-sm font-medium text-slate-300 hover:text-[var(--gold)] transition-colors">Research</a>
+      <a href="#about"    onclick="closeMenu()" class="text-sm font-medium text-slate-300 hover:text-[var(--gold)] transition-colors">About</a>
+      <a href="#contact"  onclick="closeMenu()" class="text-sm font-medium text-slate-300 hover:text-[var(--gold)] transition-colors">Contact</a>
+      <button onclick="openPortal();closeMenu();" class="btn-gold w-full py-3.5 rounded-xl text-sm">Client Portal</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════
+     HERO
+══════════════════════════════════════ -->
+<header class="hero-bg geo-pattern relative overflow-hidden py-36 md:py-48 px-6" style="position:relative;z-index:1;">
+  <!-- Decorative rings -->
+  <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+    <div style="width:700px;height:700px;border-radius:50%;border:1px solid rgba(255,255,255,0.025);position:absolute;"></div>
+    <div style="width:450px;height:450px;border-radius:50%;border:1px solid rgba(255,255,255,0.04);position:absolute;"></div>
+    <div style="width:200px;height:200px;border-radius:50%;border:1px solid rgba(201,150,63,0.06);position:absolute;"></div>
+  </div>
+
+  <div class="max-w-4xl mx-auto text-center relative" style="z-index:2;">
+    <!-- Pill badge -->
+    <div class="reveal inline-flex items-center gap-2.5 px-4 py-2 rounded-full mb-10"
+         style="border:1px solid rgba(201,150,63,0.22);background:rgba(201,150,63,0.07);">
+      <span class="h-1.5 w-1.5 rounded-full bg-[var(--gold)] pulse-dot"></span>
+      <span class="text-[var(--gold)] text-[11px] font-bold tracking-[0.3em] uppercase">Est. 2026 &nbsp;·&nbsp; Premium Consultancy</span>
+    </div>
+
+    <!-- Headline -->
+    <h1 class="reveal d1 display text-[clamp(3rem,10vw,6rem)] font-bold leading-[1.05] tracking-tight mb-7 text-white">
+      Modern Solutions.<br><span class="shimmer-gold">Ancient Wisdom.</span>
+    </h1>
+
+    <!-- Sub -->
+    <p class="reveal d2 text-slate-400 text-lg md:text-xl leading-relaxed max-w-xl mx-auto mb-12 font-light">
+      Bridging high-performance IT infrastructure, creative design, and
+      meticulous Islamic research — engineered for a new era of excellence.
+    </p>
+
+    <!-- CTAs -->
+    <div class="reveal d3 flex flex-col sm:flex-row justify-center gap-4">
+      <a href="#services" class="btn-gold px-8 py-4 rounded-xl text-sm font-bold inline-block">Explore Services</a>
+      <button onclick="openPortal()" class="btn-ghost px-8 py-4 rounded-xl text-sm font-semibold">Access Portal &rarr;</button>
+    </div>
+
+    <!-- Scroll cue -->
+    <div class="reveal d4 mt-20 flex flex-col items-center gap-2 opacity-30 bob">
+      <div style="width:1px;height:40px;background:linear-gradient(to bottom,transparent,var(--gold));"></div>
+      <span style="font-size:9px;letter-spacing:0.35em;text-transform:uppercase;color:var(--gold);">Scroll</span>
+    </div>
+  </div>
+</header>
+
+<!-- ══════════════════════════════════════
+     STATS BAR
+══════════════════════════════════════ -->
+<div style="border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:rgba(255,255,255,0.015);position:relative;z-index:1;">
+  <div class="max-w-5xl mx-auto px-6 py-8 grid grid-cols-2 md:grid-cols-4 gap-6 reveal">
+    <div class="text-center">
+      <p class="display text-4xl font-bold gold-text">3</p>
+      <p class="text-[11px] text-slate-500 mt-1.5 uppercase tracking-widest">Core Pillars</p>
+    </div>
+    <div class="text-center">
+      <p class="display text-4xl font-bold gold-text">100%</p>
+      <p class="text-[11px] text-slate-500 mt-1.5 uppercase tracking-widest">Verified Sources</p>
+    </div>
+    <div class="text-center">
+      <p class="display text-4xl font-bold gold-text">24h</p>
+      <p class="text-[11px] text-slate-500 mt-1.5 uppercase tracking-widest">Response Time</p>
+    </div>
+    <div class="text-center">
+      <p class="display text-4xl font-bold gold-text">SSL</p>
+      <p class="text-[11px] text-slate-500 mt-1.5 uppercase tracking-widest">Secure Platform</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SERVICES
+══════════════════════════════════════ -->
+<section id="services" class="py-28 px-6" style="position:relative;z-index:1;">
+  <div class="max-w-7xl mx-auto">
+
+    <div class="mb-16 reveal">
+      <p class="text-xs font-bold uppercase tracking-[0.32em] mb-4" style="color:var(--gold);">What We Do</p>
+      <h2 class="display text-4xl md:text-5xl font-bold text-white">Professional <em>Expertise</em></h2>
+      <div class="gold-line mt-4" style="width:4rem;"></div>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-5">
+
+      <!-- IT & Cloud — wide -->
+      <div class="service-card glass rounded-3xl p-8 md:col-span-2 reveal left">
+        <div class="flex items-start justify-between mb-8">
+          <div class="h-14 w-14 rounded-2xl flex items-center justify-center"
+               style="background:rgba(14,165,233,0.1);border:1px solid rgba(14,165,233,0.18);">
+            <svg class="w-7 h-7 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </div>
+          <span class="badge text-sky-400" style="background:rgba(14,165,233,0.1);border:1px solid rgba(14,165,233,0.18);">Core Service</span>
         </div>
-    </nav>
-
-    <header id="hero-header" class="emerald-gradient relative overflow-hidden py-32 px-6">
-        <div class="absolute inset-0 opacity-20" style="background-image: url('https://www.transparenttextures.com/patterns/carbon-fibre.png');"></div>
-        <div class="max-w-4xl mx-auto text-center relative z-10" data-aos="zoom-out-up">
-            <span class="inline-block px-4 py-1 mb-6 border border-[#D4AF37]/30 rounded-full text-[#D4AF37] text-xs font-bold uppercase tracking-widest bg-[#D4AF37]/10">
-                Est. 2026 • Premium Solutions
-            </span>
-            <h2 class="text-5xl md:text-7xl font-extrabold mb-8 leading-tight">Modern Solutions.<br><span class="gold-text">Ancient Wisdom.</span></h2>
-            <p class="text-slate-400 max-w-2xl mx-auto text-lg md:text-xl leading-relaxed mb-10">
-                We bridge the gap between high-performance IT infrastructure and deep-dive Islamic research.
-            </p>
-            <div class="flex flex-col md:flex-row justify-center gap-4">
-                <a href="#services" class="btn-gold px-8 py-4 rounded-xl text-emerald-900 font-bold">Explore Our Services</a>
-                <button onclick="showLogin()" class="px-8 py-4 rounded-xl border border-white/20 hover:bg-white/10 transition-all font-bold">Access Portal</button>
-            </div>
+        <h3 class="display text-3xl font-bold text-white mb-4">IT & Cloud Solutions</h3>
+        <p class="text-slate-400 leading-relaxed mb-8">Scalable networking, robust Windows environments, and mission-critical web operations tailored for modern enterprises. From network architecture to cloud deployment — we handle the infrastructure so you can focus on growth.</p>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div class="px-3 py-2.5 rounded-xl text-xs font-medium text-slate-300"
+               style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);">
+            Network Architecture &amp; Security
+          </div>
+          <div class="px-3 py-2.5 rounded-xl text-xs font-medium text-slate-300"
+               style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);">
+            Enterprise Windows Management
+          </div>
+          <div class="px-3 py-2.5 rounded-xl text-xs font-medium text-slate-300"
+               style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);">
+            Web Operations &amp; Hosting
+          </div>
         </div>
-    </header>
+      </div>
 
-    <main id="main-content">
-        <section id="services" class="max-w-7xl mx-auto py-24 px-6">
-            <div class="mb-16 text-center" data-aos="fade-up">
-                <h3 class="text-4xl font-bold mb-4">Professional Expertise</h3>
-                <div class="w-20 h-1 bg-[#D4AF37] mx-auto"></div>
-            </div>
-            <div class="grid md:grid-cols-3 gap-6">
-                <div class="glass-card p-8 rounded-3xl md:col-span-2 group hover:border-[#D4AF37]/50 transition-all" data-aos="fade-right">
-                    <h4 class="text-2xl font-bold mb-4 group-hover:text-sky-400 transition-colors">IT & Cloud Solutions</h4>
-                    <p class="text-slate-400 leading-relaxed mb-6">Scaleable networking and mission-critical web operations.</p>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <section id="admin-dashboard" class="hidden max-w-6xl mx-auto py-20 px-6">
-        <div class="glass-card rounded-[2.5rem] p-10 border-red-500/20">
-            <div class="flex justify-between items-center mb-10 border-b border-white/10 pb-8">
-                <h2 class="text-3xl font-bold gold-text">Management Console</h2>
-                <button onclick="location.href='/'" class="px-6 py-2 bg-white/5 border border-white/10 rounded-xl text-xs font-bold hover:bg-white/10 transition-all">Exit Admin</button>
-            </div>
-            <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse">
-                    <thead>
-                        <tr class="border-b border-white/10 text-slate-500 text-[10px] uppercase tracking-widest font-black">
-                            <th class="p-4">Client Contact</th>
-                            <th class="p-4">Service</th>
-                            <th class="p-4">Details</th>
-                        </tr>
-                    </thead>
-                    <tbody id="admin-orders-body" class="divide-y divide-white/5"></tbody>
-                </table>
-            </div>
+      <!-- Graphic Design -->
+      <div class="service-card glass rounded-3xl p-8 reveal right">
+        <div class="h-14 w-14 rounded-2xl flex items-center justify-center mb-8"
+             style="background:rgba(201,150,63,0.1);border:1px solid rgba(201,150,63,0.2);">
+          <svg class="w-7 h-7 text-[var(--gold)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                  d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+          </svg>
         </div>
-    </section>
+        <h3 class="display text-2xl font-bold text-white mb-4">Graphic Design</h3>
+        <p class="text-slate-400 leading-relaxed mb-7">Visual identities that command attention. Expert mastery of Adobe Photoshop &amp; Illustrator for high-impact branding and creative assets.</p>
+        <div class="flex flex-wrap gap-2">
+          <span class="text-[10px] font-bold px-2.5 py-1 rounded-full" style="background:rgba(201,150,63,0.1);color:var(--gold-light);">Logo Design</span>
+          <span class="text-[10px] font-bold px-2.5 py-1 rounded-full" style="background:rgba(201,150,63,0.1);color:var(--gold-light);">Brand Identity</span>
+          <span class="text-[10px] font-bold px-2.5 py-1 rounded-full" style="background:rgba(201,150,63,0.1);color:var(--gold-light);">Print &amp; Digital</span>
+        </div>
+      </div>
 
-    <footer class="border-t border-white/5 py-12 text-center text-slate-600">
-        <p class="text-xs uppercase tracking-widest font-bold font-mono">&copy; 2026 AHITGS Group. Engineered for Excellence.</p>
-    </footer>
+      <!-- Research — full width -->
+      <div class="service-card glass rounded-3xl p-8 md:col-span-3 reveal">
+        <div class="flex flex-col md:flex-row md:items-center gap-6 md:gap-10">
+          <div class="h-14 w-14 flex-shrink-0 rounded-2xl flex items-center justify-center"
+               style="background:rgba(13,92,65,0.2);border:1px solid rgba(22,163,116,0.2);">
+            <svg class="w-7 h-7 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                    d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+            </svg>
+          </div>
+          <div class="flex-1">
+            <h3 class="display text-2xl font-bold text-white mb-2">Islamic Research</h3>
+            <p class="text-slate-400 leading-relaxed max-w-2xl">Academic-grade verification of Hadith, historical narrations, and Islamic timelines — serving as a bridge between scholarly tradition and digital clarity in an era of misinformation.</p>
+          </div>
+          <div class="flex-shrink-0">
+            <a href="#research" class="btn-ghost px-6 py-3 rounded-xl text-sm font-semibold inline-block">Learn More &rarr;</a>
+          </div>
+        </div>
+      </div>
 
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script>
-        AOS.init({ duration: 1000, once: true });
+    </div>
+  </div>
+</section>
 
-        // URL METHOD: Check for ?view=admin on page load
-        window.onload = function() {
-            const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.get('view') === 'admin') {
-                loadAdminOrders();
-            }
-        };
+<!-- ══════════════════════════════════════
+     RESEARCH
+══════════════════════════════════════ -->
+<section id="research" class="py-28 px-6" style="border-top:1px solid var(--border);background:radial-gradient(ellipse 60% 60% at 15% 50%, rgba(13,92,65,0.14) 0%, transparent 70%);position:relative;z-index:1;">
+  <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-center">
 
-        async function loadAdminOrders() {
-            try {
-                document.getElementById('main-content').classList.add('hidden');
-                document.getElementById('hero-header').classList.add('hidden');
-                document.getElementById('admin-dashboard').classList.remove('hidden');
+    <!-- Left -->
+    <div class="reveal left">
+      <p class="text-xs font-bold uppercase tracking-[0.32em] text-emerald-400 mb-4">Islamic Research Division</p>
+      <h2 class="display text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">Scholarship Meets <em class="text-emerald-400">Digital Precision</em></h2>
+      <p class="text-slate-400 leading-relaxed mb-10">We provide academic-grade verification of religious facts, sourced from authentic classical texts and cross-referenced with historical timelines — serving scholars, educators, and organisations worldwide.</p>
 
-                const res = await fetch('/admin-get-orders'); // Fetching raw backend data
-                const orders = await res.json();
-                const tbody = document.getElementById('admin-orders-body');
-                tbody.innerHTML = "";
-                
-                if (!orders || orders.length === 0) {
-                    tbody.innerHTML = "<tr><td colspan='3' class='p-20 text-center text-slate-500'>No active orders.</td></tr>";
-                    return;
-                }
+      <div class="space-y-4">
+        <div class="flex items-start gap-4 p-4 rounded-2xl" style="background:rgba(22,163,116,0.055);border:1px solid rgba(22,163,116,0.1);">
+          <div class="mt-0.5 h-6 w-6 flex-shrink-0 rounded-full flex items-center justify-center text-emerald-400 text-xs font-bold" style="background:rgba(22,163,116,0.15);">✓</div>
+          <div>
+            <p class="text-white font-semibold text-sm">Hadith &amp; Narration Verification</p>
+            <p class="text-slate-500 text-xs mt-1">Isnad (chain of narrators) analysis and grading by scholarly standards.</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-4 p-4 rounded-2xl" style="background:rgba(22,163,116,0.055);border:1px solid rgba(22,163,116,0.1);">
+          <div class="mt-0.5 h-6 w-6 flex-shrink-0 rounded-full flex items-center justify-center text-emerald-400 text-xs font-bold" style="background:rgba(22,163,116,0.15);">✓</div>
+          <div>
+            <p class="text-white font-semibold text-sm">Historical Whitepapers</p>
+            <p class="text-slate-500 text-xs mt-1">In-depth academic documents on Islamic history and civilisation.</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-4 p-4 rounded-2xl" style="background:rgba(22,163,116,0.055);border:1px solid rgba(22,163,116,0.1);">
+          <div class="mt-0.5 h-6 w-6 flex-shrink-0 rounded-full flex items-center justify-center text-emerald-400 text-xs font-bold" style="background:rgba(22,163,116,0.15);">✓</div>
+          <div>
+            <p class="text-white font-semibold text-sm">Counter-Misinformation Reports</p>
+            <p class="text-slate-500 text-xs mt-1">Evidence-based fact-checking against circulating religious misinformation.</p>
+          </div>
+        </div>
+      </div>
+    </div>
 
-                orders.forEach(order => {
-                    tbody.innerHTML += `
-                        <tr class="hover:bg-white/5 transition-all">
-                            <td class="p-4 text-sm font-bold text-slate-200">${order.email}</td>
-                            <td class="p-4"><span class="text-sky-400 text-[10px] font-bold uppercase">${order.service}</span></td>
-                            <td class="p-4 text-slate-400 text-xs">${order.details || 'N/A'}</td>
-                        </tr>`;
-                });
-            } catch (err) {
-                console.error("Access error");
-            }
-        }
+    <!-- Right panel -->
+    <div class="reveal right">
+      <div class="glass rounded-3xl p-1">
+        <div class="rounded-[1.4rem] p-8 relative overflow-hidden"
+             style="background:radial-gradient(ellipse at top, rgba(13,92,65,0.25) 0%, rgba(6,10,20,0.85) 100%);border:1px solid rgba(22,163,116,0.09);">
+          <div class="display text-[110px] font-bold leading-none text-emerald-900/25 absolute -bottom-4 -right-2 select-none">٩</div>
+          <p class="display text-5xl mb-4 opacity-35 relative" style="color:var(--gold);">"</p>
+          <p class="text-emerald-50 text-lg leading-relaxed italic font-light relative" style="z-index:1;">
+            Our research methodology ensures every fact is anchored in verified primary sources — providing intellectual clarity in a digital age saturated with misinformation.
+          </p>
+          <div class="mt-8 flex items-center gap-3 relative" style="z-index:1;">
+            <div class="h-10 w-10 rounded-full flex items-center justify-center font-bold text-[var(--gold)]"
+                 style="background:rgba(201,150,63,0.14);border:1px solid rgba(201,150,63,0.22);">A</div>
+            <div>
+              <p class="text-sm font-semibold text-white">Abdul Haseeb</p>
+              <p class="text-xs text-slate-500">Founder, AHITGS</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-        function showLogin() {
-            document.getElementById('main-content').classList.add('hidden');
-            document.getElementById('hero-header').classList.add('hidden');
-            // ... existing login logic
-        }
-    </script>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     ABOUT
+══════════════════════════════════════ -->
+<section id="about" class="py-28 px-6" style="border-top:1px solid var(--border);position:relative;z-index:1;">
+  <div class="max-w-5xl mx-auto">
+    <div class="text-center mb-16 reveal">
+      <p class="text-xs font-bold uppercase tracking-[0.32em] mb-4" style="color:var(--gold);">The Consultancy</p>
+      <h2 class="display text-4xl md:text-5xl font-bold text-white">About <em>AHITGS</em></h2>
+    </div>
+
+    <div class="glass rounded-3xl p-8 md:p-12 reveal">
+      <div class="grid md:grid-cols-3 gap-10 items-start">
+        <div class="md:col-span-2 space-y-5 text-slate-400 leading-relaxed">
+          <p><strong class="text-white">AHITGS</strong> — Abdul Haseeb IT, Graphics &amp; Research Group — is a multi-disciplinary consultancy founded in 2026 with a singular mission: to deliver professional-grade IT, creative, and research services with the same rigour found in classical Islamic scholarship.</p>
+          <p>We believe technical excellence and spiritual integrity are not opposites — they are complementary pillars of meaningful, accountable work. Every project is handled with precision, care, and full dedication to quality.</p>
+          <div class="flex flex-wrap gap-3 mt-6">
+            <span class="px-4 py-2 rounded-full text-xs font-semibold text-[var(--gold)]"
+                  style="background:rgba(201,150,63,0.1);border:1px solid rgba(201,150,63,0.2);">Cloudflare Pages</span>
+            <span class="px-4 py-2 rounded-full text-xs font-semibold text-emerald-400"
+                  style="background:rgba(22,163,116,0.1);border:1px solid rgba(22,163,116,0.2);">Adobe Suite</span>
+            <span class="px-4 py-2 rounded-full text-xs font-semibold text-sky-400"
+                  style="background:rgba(14,165,233,0.1);border:1px solid rgba(14,165,233,0.2);">Windows Specialist</span>
+          </div>
+        </div>
+        <div class="space-y-3">
+          <div class="p-5 rounded-2xl" style="background:rgba(255,255,255,0.03);border:1px solid var(--border);">
+            <p class="text-[10px] uppercase tracking-widest text-slate-500 mb-1.5">Founder</p>
+            <p class="text-white font-semibold text-sm">Abdul Haseeb</p>
+          </div>
+          <div class="p-5 rounded-2xl" style="background:rgba(255,255,255,0.03);border:1px solid var(--border);">
+            <p class="text-[10px] uppercase tracking-widest text-slate-500 mb-1.5">Platform</p>
+            <p class="text-white font-semibold text-sm">velocitech.pages.dev</p>
+          </div>
+          <div class="p-5 rounded-2xl" style="background:rgba(255,255,255,0.03);border:1px solid var(--border);">
+            <p class="text-[10px] uppercase tracking-widest text-slate-500 mb-1.5">Deployed via</p>
+            <p class="text-white font-semibold text-sm">Cloudflare Pages</p>
+          </div>
+          <div class="p-5 rounded-2xl" style="background:rgba(255,255,255,0.03);border:1px solid var(--border);">
+            <p class="text-[10px] uppercase tracking-widest text-slate-500 mb-1.5">Founded</p>
+            <p class="text-white font-semibold text-sm">2026</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     CONTACT
+══════════════════════════════════════ -->
+<section id="contact" class="py-28 px-6" style="border-top:1px solid var(--border);position:relative;z-index:1;">
+  <div class="max-w-4xl mx-auto">
+    <div class="text-center mb-16 reveal">
+      <p class="text-xs font-bold uppercase tracking-[0.32em] mb-4" style="color:var(--gold);">Get In Touch</p>
+      <h2 class="display text-4xl md:text-5xl font-bold text-white">Start a <em>Conversation</em></h2>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-8">
+      <!-- Links -->
+      <div class="space-y-4 reveal left">
+        <a href="mailto:reach.ahitgs@hotmail.com?cc=alhaseeb2006@gmail.com&subject=Inquiry%20about%20your%20services&body=Salam'un%20Alaikum%0A%0AI%20would%20like%20to%20learn%20more%20about%20your%20services."
+           class="contact-card glass flex items-center gap-4 p-5 rounded-2xl hover:border-[var(--gold)]/30 block">
+          <div class="h-11 w-11 flex-shrink-0 rounded-xl flex items-center justify-center"
+               style="background:rgba(201,150,63,0.1);border:1px solid rgba(201,150,63,0.2);">
+            <svg class="w-5 h-5 text-[var(--gold)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+          </div>
+          <div>
+            <p class="text-[10px] uppercase tracking-widest text-slate-500 mb-0.5">Email</p>
+            <p class="text-sm font-medium text-white">reach.ahitgs@hotmail.com</p>
+          </div>
+        </a>
+
+        <a href="https://wa.link/k450ik" target="_blank" rel="noopener"
+           class="contact-card glass flex items-center gap-4 p-5 rounded-2xl hover:border-emerald-500/30 block">
+          <div class="h-11 w-11 flex-shrink-0 rounded-xl flex items-center justify-center"
+               style="background:rgba(22,163,116,0.1);border:1px solid rgba(22,163,116,0.2);">
+            <svg class="w-5 h-5 text-emerald-400" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          </div>
+          <div>
+            <p class="text-[10px] uppercase tracking-widest text-slate-500 mb-0.5">WhatsApp</p>
+            <p class="text-sm font-medium text-white">Direct Message</p>
+          </div>
+        </a>
+
+        <a href="https://www.facebook.com/profile.php?id=61568687456918" target="_blank" rel="noopener"
+           class="contact-card glass flex items-center gap-4 p-5 rounded-2xl hover:border-sky-500/30 block">
+          <div class="h-11 w-11 flex-shrink-0 rounded-xl flex items-center justify-center"
+               style="background:rgba(14,165,233,0.1);border:1px solid rgba(14,165,233,0.2);">
+            <svg class="w-5 h-5 text-sky-400" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          </div>
+          <div>
+            <p class="text-[10px] uppercase tracking-widest text-slate-500 mb-0.5">Facebook</p>
+            <p class="text-sm font-medium text-white">@AHITGS</p>
+          </div>
+        </a>
+
+        <button onclick="openPortal()"
+           class="contact-card glass flex items-center gap-4 p-5 rounded-2xl hover:border-[var(--gold)]/30 w-full text-left">
+          <div class="h-11 w-11 flex-shrink-0 rounded-xl flex items-center justify-center btn-gold">
+            <svg class="w-5 h-5" style="color:#060A14;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+          </div>
+          <div>
+            <p class="text-[10px] uppercase tracking-widest text-slate-500 mb-0.5">Client Portal</p>
+            <p class="text-sm font-medium text-white">Secure Project Access</p>
+          </div>
+        </button>
+      </div>
+
+      <!-- CTA panel -->
+      <div class="reveal right">
+        <div class="glass rounded-3xl p-8 h-full flex flex-col justify-between"
+             style="background:radial-gradient(ellipse at top right, rgba(201,150,63,0.07), transparent);">
+          <div>
+            <p class="display text-5xl opacity-30 mb-4" style="color:var(--gold);">"</p>
+            <h3 class="display text-2xl font-bold text-white mb-4">Ready to begin your project?</h3>
+            <p class="text-slate-400 leading-relaxed mb-8">Whether you need robust IT infrastructure, creative design, or in-depth Islamic research — we're ready to serve you with excellence and full accountability.</p>
+          </div>
+          <button onclick="openPortal()" class="btn-gold w-full py-4 rounded-xl font-bold text-sm">
+            Open Client Portal
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     FOOTER
+══════════════════════════════════════ -->
+<footer style="border-top:1px solid var(--border);background:rgba(0,0,0,0.28);position:relative;z-index:1;" class="py-10 px-6">
+  <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-5">
+    <div class="flex items-center gap-3">
+      <div class="h-8 w-8 rounded-lg flex items-center justify-center"
+           style="background:rgba(201,150,63,0.14);border:1px solid rgba(201,150,63,0.24);">
+        <span class="display text-[var(--gold)] font-bold text-sm select-none">A</span>
+      </div>
+      <span class="font-bold tracking-tight text-white">AH<span class="gold-text">ITGS</span></span>
+    </div>
+    <p class="text-[10px] text-slate-600 uppercase tracking-[0.22em] font-medium text-center">
+      &copy; 2026 AH IT &amp; Research Group &nbsp;·&nbsp; Engineered for Excellence
+    </p>
+    <div class="flex gap-6 text-sm text-slate-500">
+      <a href="https://www.facebook.com/profile.php?id=61568687456918" class="hover:text-[var(--gold)] transition-colors">Facebook</a>
+      <a href="https://wa.link/k450ik" class="hover:text-[var(--gold)] transition-colors">WhatsApp</a>
+      <a href="mailto:reach.ahitgs@hotmail.com" class="hover:text-[var(--gold)] transition-colors">Email</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ══════════════════════════════════════
+     CLIENT PORTAL MODAL
+══════════════════════════════════════ -->
+<div id="portal-overlay" class="modal-overlay fixed inset-0 flex items-center justify-center p-4"
+     style="z-index:100;background:rgba(6,10,20,0.94);backdrop-filter:blur(10px);">
+  <div class="w-full max-w-md modal-card">
+
+    <!-- Step 1: Credentials -->
+    <div id="step-login" class="glass rounded-[2rem] p-8 shadow-2xl relative overflow-hidden">
+      <div class="absolute top-0 right-0 w-36 h-36 rounded-full blur-3xl pointer-events-none"
+           style="background:var(--gold);opacity:0.07;transform:translate(50%,-50%);"></div>
+
+      <button onclick="closePortal()" class="absolute top-5 right-5 text-slate-500 hover:text-white transition-colors">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+
+      <div class="h-12 w-12 rounded-2xl flex items-center justify-center mb-6"
+           style="background:rgba(201,150,63,0.12);border:1px solid rgba(201,150,63,0.25);">
+        <svg class="w-6 h-6 text-[var(--gold)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+      </div>
+
+      <h3 class="display text-2xl font-bold text-white mb-1">Secure Portal</h3>
+      <p class="text-slate-500 text-sm mb-8">Enter your details to receive a verification code.</p>
+
+      <div class="space-y-4">
+        <div>
+          <label class="text-[10px] font-bold uppercase tracking-widest text-slate-500 block mb-2">Full Name</label>
+          <input type="text" id="login-name" placeholder="e.g. Ahmad Khan" class="form-input w-full p-4 rounded-xl text-sm">
+        </div>
+        <div>
+          <label class="text-[10px] font-bold uppercase tracking-widest text-slate-500 block mb-2">Email Address</label>
+          <input type="email" id="login-email" placeholder="you@example.com" class="form-input w-full p-4 rounded-xl text-sm">
+        </div>
+        <div>
+          <label class="text-[10px] font-bold uppercase tracking-widest text-slate-500 block mb-2">Service Required</label>
+          <select id="login-service" class="form-input w-full p-4 rounded-xl text-sm">
+            <option value="IT & Cloud Solutions">IT &amp; Cloud Solutions</option>
+            <option value="Graphic Design">Graphic Design</option>
+            <option value="Islamic Research">Islamic Research</option>
+            <option value="Multiple Services">Multiple Services</option>
+          </select>
+        </div>
+        <button id="send-otp-btn" onclick="sendOTP()" class="btn-gold w-full py-4 rounded-xl text-sm font-bold">
+          Request Access Code
+        </button>
+      </div>
+    </div>
+
+    <!-- Step 2: OTP -->
+    <div id="step-otp" class="hidden glass rounded-[2rem] p-8 shadow-2xl relative overflow-hidden">
+      <div class="absolute top-0 left-0 w-36 h-36 rounded-full blur-3xl pointer-events-none"
+           style="background:var(--emerald-light);opacity:0.07;transform:translate(-50%,-50%);"></div>
+
+      <button onclick="closePortal()" class="absolute top-5 right-5 text-slate-500 hover:text-white transition-colors">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+
+      <div class="h-12 w-12 rounded-2xl flex items-center justify-center mb-6"
+           style="background:rgba(22,163,116,0.14);border:1px solid rgba(22,163,116,0.25);">
+        <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+      </div>
+
+      <h3 class="display text-2xl font-bold text-white mb-1">Check Your Email</h3>
+      <p class="text-slate-500 text-sm mb-1">A 6-digit code was sent to</p>
+      <p id="otp-email-display" class="font-semibold text-sm mb-8" style="color:var(--gold);">your email</p>
+
+      <div class="space-y-4">
+        <div>
+          <label class="text-[10px] font-bold uppercase tracking-widest text-slate-500 block mb-2">Verification Code</label>
+          <input type="text" id="login-otp" placeholder="• • • • • •" maxlength="6" inputmode="numeric"
+                 class="form-input w-full p-4 rounded-xl text-sm text-center tracking-[0.5em] text-xl font-bold">
+        </div>
+        <button id="verify-otp-btn" onclick="verifyOTP()" class="btn-gold w-full py-4 rounded-xl text-sm font-bold">
+          Verify &amp; Enter Dashboard
+        </button>
+        <button onclick="backToLogin()" class="btn-ghost w-full py-3 rounded-xl text-xs font-semibold">
+          &larr; Go Back
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     DASHBOARD OVERLAY
+══════════════════════════════════════ -->
+<div id="dashboard-overlay" class="modal-overlay fixed inset-0 overflow-y-auto" style="z-index:100;background:var(--bg);">
+  <div class="min-h-screen px-4 py-10 md:py-16">
+    <div class="max-w-3xl mx-auto">
+
+      <!-- Header -->
+      <div class="flex items-start justify-between mb-10">
+        <div>
+          <p class="text-[10px] font-bold uppercase tracking-[0.32em] mb-1" style="color:var(--gold);">Client Dashboard</p>
+          <h2 class="display text-3xl md:text-4xl font-bold text-white">Assalam-o-Alaikum, <span id="user-name" class="gold-text">Client</span></h2>
+          <p class="text-slate-500 text-sm mt-1">Welcome to your secure project environment.</p>
+        </div>
+        <button onclick="closeDashboard()"
+                class="flex-shrink-0 px-4 py-2 rounded-lg text-xs font-bold text-red-400 transition-all"
+                style="border:1px solid rgba(239,68,68,0.2);background:rgba(239,68,68,0.05);"
+                onmouseover="this.style.background='rgba(239,68,68,0.12)'" onmouseout="this.style.background='rgba(239,68,68,0.05)'">
+          Logout
+        </button>
+      </div>
+
+      <!-- Stats -->
+      <div class="grid grid-cols-2 gap-4 mb-8">
+        <div class="glass rounded-2xl p-5">
+          <p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest mb-2">Active Track</p>
+          <p id="user-service" class="text-lg font-bold text-sky-400">—</p>
+        </div>
+        <div class="glass rounded-2xl p-5">
+          <p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest mb-2">Portal Status</p>
+          <p class="text-lg font-bold text-emerald-400">Verified ✓</p>
+        </div>
+      </div>
+
+      <!-- Project submission -->
+      <div class="glass rounded-3xl p-6 md:p-8 mb-8">
+        <h3 class="font-bold text-white mb-1 flex items-center gap-2">
+          <span class="h-2 w-2 rounded-full" style="background:var(--gold);"></span>
+          Submit a Project Request
+        </h3>
+        <p class="text-slate-500 text-xs mb-6">Describe your project and we'll respond within 24 hours.</p>
+
+        <div class="space-y-4">
+          <div>
+            <label class="text-[10px] font-bold uppercase tracking-widest text-slate-500 block mb-2">Sub-Service</label>
+            <select id="project-subservice" class="form-input w-full p-3 rounded-xl text-sm">
+              <option value="Network Configuration">Network Configuration</option>
+              <option value="Website Hosting Setup">Website Hosting Setup</option>
+              <option value="Windows Enterprise Setup">Windows Enterprise Setup</option>
+              <option value="Logo Design">Logo Design</option>
+              <option value="Brand Identity Package">Brand Identity Package</option>
+              <option value="Hadith Verification">Hadith Verification</option>
+              <option value="Historical Research Whitepaper">Historical Research Whitepaper</option>
+              <option value="Custom Request">Custom Request</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-[10px] font-bold uppercase tracking-widest text-slate-500 block mb-2">Project Description</label>
+            <textarea id="project-description" rows="4" placeholder="Describe your requirements in detail..."
+                      class="form-input w-full p-3 rounded-xl text-sm resize-none"></textarea>
+          </div>
+          <button id="submit-project-btn" onclick="submitProject()" class="btn-gold w-full py-3.5 rounded-xl text-sm font-bold">
+            Submit Request
+          </button>
+          <div id="submit-success" class="hidden py-3 rounded-xl text-sm font-semibold text-emerald-400 text-center"
+               style="background:rgba(22,163,116,0.09);border:1px solid rgba(22,163,116,0.18);">
+            ✓ Request submitted! We'll be in touch soon.
+          </div>
+        </div>
+      </div>
+
+      <!-- Activity log -->
+      <div class="glass rounded-3xl p-6 md:p-8">
+        <h3 class="font-bold text-white mb-4 flex items-center gap-2">
+          <span class="h-2 w-2 rounded-full" style="background:var(--gold);"></span>
+          Session Activity
+        </h3>
+        <div id="activity-log" class="space-y-3">
+          <div class="flex justify-between items-center py-2 text-sm" style="border-bottom:1px solid rgba(255,255,255,0.05);">
+            <span class="text-slate-400 italic">Session initialized</span>
+            <span class="text-slate-600 text-xs" id="login-time">Just now</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     ADMIN PANEL (?view=admin)
+══════════════════════════════════════ -->
+<div id="admin-overlay" class="modal-overlay fixed inset-0 overflow-y-auto" style="z-index:200;background:var(--bg);">
+  <div class="min-h-screen px-4 py-10">
+    <div class="max-w-5xl mx-auto">
+
+      <!-- Auth gate -->
+      <div id="admin-auth-gate">
+        <div class="max-w-sm mx-auto pt-20">
+          <div class="glass rounded-3xl p-8">
+            <div class="h-12 w-12 rounded-2xl flex items-center justify-center mb-6"
+                 style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.22);">
+              <svg class="w-6 h-6 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+            </div>
+            <h3 class="display text-2xl font-bold text-white mb-1">Admin Console</h3>
+            <p class="text-slate-500 text-sm mb-6">Enter the admin key to access the management dashboard.</p>
+            <input type="password" id="admin-key-input" placeholder="Admin key"
+                   class="form-input w-full p-4 rounded-xl text-sm mb-4"
+                   onkeydown="if(event.key==='Enter')verifyAdmin()">
+            <button onclick="verifyAdmin()" class="w-full py-3.5 rounded-xl text-sm font-bold text-white transition-all"
+                    style="background:rgba(239,68,68,0.16);border:1px solid rgba(239,68,68,0.28);">
+              Authenticate
+            </button>
+            <a href="/" class="block text-center mt-4 text-xs text-slate-600 hover:text-slate-400 transition-colors">&larr; Return to site</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Admin dashboard -->
+      <div id="admin-panel" class="hidden">
+        <div class="flex items-center justify-between mb-10">
+          <div>
+            <p class="text-[10px] text-red-400 font-bold uppercase tracking-[0.32em] mb-1">Admin Console</p>
+            <h2 class="display text-3xl font-bold text-white">Management Dashboard</h2>
+          </div>
+          <div class="flex gap-3">
+            <button onclick="loadAdminRequests()" class="btn-ghost px-4 py-2 rounded-lg text-xs font-bold">↻ Refresh</button>
+            <a href="/" class="px-4 py-2 rounded-lg text-xs font-bold text-red-400 transition-all"
+               style="border:1px solid rgba(239,68,68,0.22);">Exit Admin</a>
+          </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="grid grid-cols-3 gap-4 mb-8">
+          <div class="glass rounded-2xl p-5 text-center">
+            <p class="display text-3xl font-bold gold-text" id="stat-total">—</p>
+            <p class="text-[11px] text-slate-500 uppercase tracking-widest mt-1">Total Requests</p>
+          </div>
+          <div class="glass rounded-2xl p-5 text-center">
+            <p class="display text-3xl font-bold text-emerald-400" id="stat-new">—</p>
+            <p class="text-[11px] text-slate-500 uppercase tracking-widest mt-1">Unresolved</p>
+          </div>
+          <div class="glass rounded-2xl p-5 text-center">
+            <p class="display text-3xl font-bold text-sky-400" id="stat-services">—</p>
+            <p class="text-[11px] text-slate-500 uppercase tracking-widest mt-1">Services</p>
+          </div>
+        </div>
+
+        <!-- Requests table -->
+        <div class="glass rounded-3xl overflow-hidden">
+          <div class="px-6 py-4 flex items-center justify-between" style="border-bottom:1px solid var(--border);">
+            <h3 class="font-bold text-white text-sm">Client Requests</h3>
+            <span id="admin-request-count" class="text-xs text-slate-500">Loading...</span>
+          </div>
+          <div id="admin-requests-container">
+            <div class="p-10 text-center text-slate-500 text-sm">Fetching requests...</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCRIPTS
+══════════════════════════════════════ -->
+<script>
+// ─── Scroll Reveal ────────────────────────────────────────────────────────────
+const revealObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      revealObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+// ─── Mobile Menu ──────────────────────────────────────────────────────────────
+let menuOpen = false;
+function toggleMenu() {
+  menuOpen = !menuOpen;
+  document.getElementById('mobile-menu').classList.toggle('open', menuOpen);
+  document.getElementById('hb1').style.transform = menuOpen ? 'rotate(45deg) translateY(7px)' : '';
+  document.getElementById('hb2').style.opacity = menuOpen ? '0' : '1';
+  document.getElementById('hb3').style.transform = menuOpen ? 'rotate(-45deg) translateY(-7px)' : '';
+}
+function closeMenu() { if (menuOpen) toggleMenu(); }
+
+// ─── State ────────────────────────────────────────────────────────────────────
+let userEmail = '', currentUserName = '', currentService = '';
+
+// ─── Portal ───────────────────────────────────────────────────────────────────
+function openPortal() {
+  document.getElementById('portal-overlay').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+function closePortal() {
+  document.getElementById('portal-overlay').classList.remove('active');
+  document.body.style.overflow = '';
+}
+function backToLogin() {
+  document.getElementById('step-otp').classList.add('hidden');
+  document.getElementById('step-login').classList.remove('hidden');
+}
+document.getElementById('portal-overlay').addEventListener('click', e => {
+  if (e.target === document.getElementById('portal-overlay')) closePortal();
+});
+
+// ─── OTP Flow ─────────────────────────────────────────────────────────────────
+async function sendOTP() {
+  const name    = document.getElementById('login-name').value.trim();
+  const email   = document.getElementById('login-email').value.trim();
+  const service = document.getElementById('login-service').value;
+  const btn     = document.getElementById('send-otp-btn');
+
+  if (!name)  return showToast('Please enter your full name.');
+  if (!email || !email.includes('@')) return showToast('Please enter a valid email address.');
+
+  userEmail = email; currentUserName = name; currentService = service;
+  setBtn(btn, true, '⟳ Sending...');
+
+  try {
+    const res = await fetch('/send-otp', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, name, service })
+    });
+
+    if (res.ok) {
+      document.getElementById('otp-email-display').textContent = email;
+      document.getElementById('step-login').classList.add('hidden');
+      document.getElementById('step-otp').classList.remove('hidden');
+    } else {
+      const d = await res.json().catch(() => ({}));
+      throw new Error(d.error || 'Could not send code. Try again.');
+    }
+  } catch (err) {
+    showToast(err.message);
+  } finally {
+    setBtn(btn, false, 'Request Access Code');
+  }
+}
+
+async function verifyOTP() {
+  const otp = document.getElementById('login-otp').value.trim();
+  const btn  = document.getElementById('verify-otp-btn');
+
+  if (!otp || otp.length < 6) return showToast('Please enter the 6-digit code.');
+  setBtn(btn, true, '⟳ Verifying...');
+
+  try {
+    const res = await fetch('/verify-otp', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: userEmail, otp })
+    });
+    const data = await res.json();
+
+    if (res.ok && data.success) {
+      closePortal();
+      openDashboard();
+    } else {
+      showToast(data.error || 'Invalid code. Please try again.');
+    }
+  } catch {
+    showToast('Connection error. Please check your network.');
+  } finally {
+    setBtn(btn, false, 'Verify & Enter Dashboard');
+  }
+}
+
+// ─── Dashboard ────────────────────────────────────────────────────────────────
+function openDashboard() {
+  document.getElementById('user-name').textContent    = currentUserName || 'Client';
+  document.getElementById('user-service').textContent = currentService  || '—';
+  document.getElementById('login-time').textContent   = new Date().toLocaleTimeString();
+  document.getElementById('dashboard-overlay').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+function closeDashboard() {
+  document.getElementById('dashboard-overlay').classList.remove('active');
+  document.body.style.overflow = '';
+  // Reset state
+  userEmail = ''; currentUserName = ''; currentService = '';
+  ['login-name','login-email','login-otp'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('step-otp').classList.add('hidden');
+  document.getElementById('step-login').classList.remove('hidden');
+  document.getElementById('submit-success').classList.add('hidden');
+}
+
+async function submitProject() {
+  const subservice   = document.getElementById('project-subservice').value;
+  const description  = document.getElementById('project-description').value.trim();
+  const btn          = document.getElementById('submit-project-btn');
+
+  if (!description) return showToast('Please describe your project first.');
+  setBtn(btn, true, '⟳ Submitting...');
+
+  try {
+    const res = await fetch('/submit-project', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: userEmail, name: currentUserName, service: currentService, subservice, description })
+    });
+
+    if (res.ok) {
+      document.getElementById('submit-success').classList.remove('hidden');
+      document.getElementById('project-description').value = '';
+      addActivity(`Project submitted: ${subservice}`, 'text-emerald-400');
+    } else {
+      const d = await res.json().catch(() => ({}));
+      throw new Error(d.error || 'Submission failed. Try again.');
+    }
+  } catch (err) {
+    showToast(err.message);
+  } finally {
+    setBtn(btn, false, 'Submit Request');
+  }
+}
+
+function addActivity(text, colorClass) {
+  const log   = document.getElementById('activity-log');
+  const entry = document.createElement('div');
+  entry.className = 'flex justify-between items-center py-2 text-sm';
+  entry.style.borderBottom = '1px solid rgba(255,255,255,0.05)';
+  entry.innerHTML = `<span class="${colorClass}">${text}</span><span class="text-slate-600 text-xs">${new Date().toLocaleTimeString()}</span>`;
+  log.appendChild(entry);
+}
+
+// ─── Admin ────────────────────────────────────────────────────────────────────
+function checkAdminURL() {
+  if (new URLSearchParams(location.search).get('view') === 'admin') {
+    document.getElementById('admin-overlay').classList.add('active');
+    document.body.style.overflow = 'hidden';
+    if (sessionStorage.getItem('ahitgs_admin')) {
+      showAdminPanel();
+      loadAdminRequests();
+    }
+  }
+}
+
+function verifyAdmin() {
+  const key = document.getElementById('admin-key-input').value;
+  if (!key) return showToast('Please enter the admin key.');
+  sessionStorage.setItem('admin_key_val', key);
+  showAdminPanel();
+  loadAdminRequests();
+}
+
+function showAdminPanel() {
+  sessionStorage.setItem('ahitgs_admin', '1');
+  document.getElementById('admin-auth-gate').classList.add('hidden');
+  document.getElementById('admin-panel').classList.remove('hidden');
+}
+
+async function loadAdminRequests() {
+  const key       = sessionStorage.getItem('admin_key_val') || '';
+  const container = document.getElementById('admin-requests-container');
+  container.innerHTML = '<div class="p-10 text-center text-slate-500 text-sm">Fetching requests...</div>';
+
+  try {
+    const res = await fetch(`/admin/requests?key=${encodeURIComponent(key)}`);
+
+    if (res.status === 401) {
+      container.innerHTML = '<div class="p-8 text-center text-red-400 text-sm">Authentication failed. Reload the page and re-enter the admin key.</div>';
+      sessionStorage.removeItem('ahitgs_admin');
+      document.getElementById('admin-panel').classList.add('hidden');
+      document.getElementById('admin-auth-gate').classList.remove('hidden');
+      return;
+    }
+
+    const data = await res.json();
+    const reqs = (data.requests || []).sort((a,b) => (b.timestamp||0)-(a.timestamp||0));
+
+    document.getElementById('stat-total').textContent    = reqs.length;
+    document.getElementById('stat-new').textContent      = reqs.filter(r=>!r.resolved).length;
+    document.getElementById('stat-services').textContent = new Set(reqs.map(r=>r.service)).size;
+    document.getElementById('admin-request-count').textContent = `${reqs.length} record${reqs.length!==1?'s':''}`;
+
+    if (!reqs.length) {
+      container.innerHTML = '<div class="p-10 text-center text-slate-500 text-sm">No client requests yet.</div>';
+      return;
+    }
+
+    container.innerHTML = reqs.map(r => `
+      <div class="px-6 py-5 hover:bg-white/[0.02] transition-colors" style="border-bottom:1px solid var(--border);">
+        <div class="flex flex-col md:flex-row md:items-start justify-between gap-4">
+          <div class="flex-1 min-w-0">
+            <div class="flex flex-wrap items-center gap-2 mb-1.5">
+              <span class="font-semibold text-white text-sm">${esc(r.name)}</span>
+              <span class="badge ${r.resolved?'text-slate-500':'text-emerald-400'}"
+                    style="${r.resolved?'background:rgba(255,255,255,0.04);':'background:rgba(22,163,116,0.1);border:1px solid rgba(22,163,116,0.18);'}">
+                ${r.type||'request'} · ${r.resolved?'resolved':'new'}
+              </span>
+            </div>
+            <p class="text-xs text-slate-500 mb-1">${esc(r.email)} &middot; ${esc(r.service)}</p>
+            ${r.subservice?`<p class="text-xs mb-2" style="color:var(--gold);">${esc(r.subservice)}</p>`:''}
+            ${r.description?`<p class="text-sm text-slate-400 leading-relaxed mt-2">${esc(r.description)}</p>`:''}
+          </div>
+          <div class="flex-shrink-0 text-right">
+            <p class="text-xs text-slate-600">${r.timestamp?new Date(r.timestamp).toLocaleString('en-GB',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}):'—'}</p>
+          </div>
+        </div>
+      </div>`).join('');
+
+  } catch (err) {
+    container.innerHTML = `<div class="p-8 text-center text-red-400 text-sm">Error: ${esc(err.message)}</div>`;
+  }
+}
+
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+function setBtn(btn, disabled, text) {
+  btn.disabled = disabled;
+  btn.textContent = text;
+}
+
+function esc(s) {
+  if (!s) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function showToast(msg) {
+  document.querySelectorAll('.toast').forEach(t=>t.remove());
+  const t = document.createElement('div');
+  t.className = 'toast';
+  Object.assign(t.style, {
+    position:'fixed', bottom:'24px', left:'50%', transform:'translateX(-50%)',
+    zIndex:'9998', padding:'12px 20px', borderRadius:'14px',
+    fontSize:'13px', fontWeight:'600', color:'#FCA5A5',
+    background:'rgba(239,68,68,0.12)', border:'1px solid rgba(239,68,68,0.28)',
+    backdropFilter:'blur(10px)', whiteSpace:'nowrap'
+  });
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(()=>t.remove(), 4000);
+}
+
+// ─── Init ─────────────────────────────────────────────────────────────────────
+checkAdminURL();
+</script>
+
 </body>
 </html>
