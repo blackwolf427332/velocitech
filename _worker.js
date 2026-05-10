@@ -345,6 +345,6 @@ export default {
     if (url.pathname === '/health')
       return json({ status: 'ok', service: 'AHITGS Worker', ts: Date.now() });
 
-    return json({ error: 'Route not found.' }, 404);
+    return env.ASSETS.fetch(request);
   },
 };
