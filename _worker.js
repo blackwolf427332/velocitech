@@ -125,17 +125,18 @@ async function sendOTPEmail(env, { to, name, code, service }) {
     </html>
   `;
 
-  const response = await fetch('https://api.brevo.com/v3/smtp/email', {
-    method: 'POST',
-    headers: {
-      'api-key':      env.BREVO_API_KEY,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      sender:      { name: 'AHITGS Portal', email: 'alhaseeb2006@gmail.com' },
-      to:          [{ email: to, name }],
-      subject:     `${code} — Your AHITGS Access Code`,
-      htmlContent: html,
+ const response = await fetch('https://api.mailjet.com/v3.1/send', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Basic ' + btoa(env.MAILJET_API_KEY + ':' + env.MAILJET_SECRET_KEY),
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    Messages: [{
+      From:     { Email: 'alhaseeb2006@gmail.com', Name: 'AHITGS Portal' },
+      To:       [{ Email: to, Name: name }],
+      Subject:  `${code} — Your AHITGS Access Code`,
+      HTMLPart: html,
     }),
   });
 
