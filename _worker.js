@@ -153,17 +153,18 @@ async function sendOTPEmail(env, { to, name, code, service }) {
 async function notifyAdmin(env, { name, email, service, subservice, description }) {
   if (!env.ADMIN_EMAIL || !env.BREVO_API_KEY) return;
 
-  await fetch('https://api.brevo.com/v3/smtp/email', {
-    method: 'POST',
-    headers: {
-      'api-key':      env.BREVO_API_KEY,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      sender:      { name: 'AHITGS Portal', email: 'alhaseeb2006@gmail.com' },
-      to:          [{ email: env.ADMIN_EMAIL }],
-      subject:     `New Request — ${name} (${service})`,
-      htmlContent: `
+  await fetch('https://api.mailjet.com/v3.1/send', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Basic ' + btoa(env.MAILJET_API_KEY + ':' + env.MAILJET_SECRET_KEY),
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    Messages: [{
+      From:     { Email: 'alhaseeb2006@gmail.com', Name: 'AHITGS Portal' },
+      To:       [{ Email: env.ADMIN_EMAIL }],
+      Subject:  `New Request — ${name} (${service})`,
+      HTMLPart: `
         <div style="font-family:Arial,sans-serif;background:#060A14;color:#D8D3C8;padding:32px;border-radius:12px;">
           <h2 style="color:#C9963F;margin-top:0;">New Project Request</h2>
           <p><strong>Client:</strong> ${escapeHtml(name)}</p>
