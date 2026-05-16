@@ -80,11 +80,13 @@ async function sendOTPEmail(env, { to, name, code, service }) {
       template_id: env.EMAILJS_TEMPLATE_ID,
       user_id:     env.EMAILJS_PUBLIC_KEY,
       template_params: {
-        to_email:     to,
-        to_name:      name,
-        otp_code:     code,
-        service_name: service,
-        reply_to:     'reach.ahitgs@hotmail.com',
+      to_email:     to,
+      to_name:      name,
+      passcode:     code,
+      time:         new Date(Date.now() + 10 * 60 * 1000).toLocaleTimeString(),
+      service_name: service,
+      reply_to:     'reach.ahitgs@hotmail.com',
+},
       },
     }),
   });
