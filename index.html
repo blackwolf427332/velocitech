@@ -1079,6 +1079,23 @@ async function loadAdminRequests() {
             <p class="text-xs text-slate-500 mb-1">${esc(r.email)} &middot; ${esc(r.service)}</p>
             ${r.subservice?`<p class="text-xs mb-2" style="color:var(--gold);">${esc(r.subservice)}</p>`:''}
             ${r.description?`<p class="text-sm text-slate-400 leading-relaxed mt-2">${esc(r.description)}</p>`:''}
+            <div class="flex flex-wrap gap-2 mt-4">
+              <a href="mailto:${esc(r.email)}?subject=Re: Your AHITGS ${esc(r.service)} Request&body=Assalam-o-Alaikum ${esc(r.name)},%0A%0AThank you for reaching out to AHITGS.%0A%0A"
+                 class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-sky-400 transition-all"
+                 style="background:rgba(14,165,233,0.1);border:1px solid rgba(14,165,233,0.2);">
+                ✉ Reply by Email
+              </a>
+              ${!r.resolved ? `
+              <button onclick="resolveRequest('${esc(r.kvKey||'')}', this)"
+                 class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-emerald-400 transition-all"
+                 style="background:rgba(22,163,116,0.1);border:1px solid rgba(22,163,116,0.2);">
+                ✓ Mark Resolved
+              </button>` : `
+              <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-600"
+                 style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);">
+                ✓ Resolved
+              </span>`}
+            </div>
           </div>
           <div class="flex-shrink-0 text-right">
             <p class="text-xs text-slate-600">${r.timestamp?new Date(r.timestamp).toLocaleString('en-GB',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}):'—'}</p>
@@ -1088,6 +1105,33 @@ async function loadAdminRequests() {
 
   } catch (err) {
     container.innerHTML = `<div class="p-8 text-center text-red-400 text-sm">Error: ${esc(err.message)}</div>`;
+  }
+}
+
+// ─── Resolve Request ──────────────────────────────────────────────────────────
+async function resolveRequest(kvKey, btn) {
+  if (!kvKey) return showToast('Cannot resolve — key missing.');
+  const adminKey = sessionStorage.getItem('admin_key_val') || '';
+  btn.disabled = true;
+  btn.textContent = '⟳ Saving...';
+
+  try {
+    const res = await fetch('https://ahitgs-backend.ahitgs.workers.dev/admin/resolve', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ key: adminKey, kvKey })
+    });
+    if (res.ok) {
+      loadAdminRequests();
+    } else {
+      showToast('Could not mark as resolved. Try again.');
+      btn.disabled = false;
+      btn.textContent = '✓ Mark Resolved';
+    }
+  } catch {
+    showToast('Network error. Try again.');
+    btn.disabled = false;
+    btn.textContent = '✓ Mark Resolved';
   }
 }
 
