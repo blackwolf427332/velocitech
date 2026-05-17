@@ -888,7 +888,7 @@ async function sendOTP() {
   setBtn(btn, true, '⟳ Sending...');
 
   try {
-    const res = await fetch('/send-otp', {
+    const res = await fetch('https://ahitgs-backend.ahitgs.workers.dev/send-otp', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, name, service })
@@ -917,7 +917,7 @@ async function verifyOTP() {
   setBtn(btn, true, '⟳ Verifying...');
 
   try {
-    const res = await fetch('/verify-otp', {
+    const res = await fetch('https://ahitgs-backend.ahitgs.workers.dev/verify-otp', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: userEmail, otp })
@@ -965,7 +965,7 @@ async function submitProject() {
   setBtn(btn, true, '⟳ Submitting...');
 
   try {
-    const res = await fetch('/submit-project', {
+    const res = await fetch('https://ahitgs-backend.ahitgs.workers.dev/submit-project', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: userEmail, name: currentUserName, service: currentService, subservice, description })
@@ -1027,7 +1027,7 @@ async function loadAdminRequests() {
   container.innerHTML = '<div class="p-10 text-center text-slate-500 text-sm">Fetching requests...</div>';
 
   try {
-    const res = await fetch(`/admin/requests?key=${encodeURIComponent(key)}`);
+    const res = await fetch(`https://ahitgs-backend.ahitgs.workers.dev/admin/requests?key=${encodeURIComponent(key)}`);
 
     if (res.status === 401) {
       container.innerHTML = '<div class="p-8 text-center text-red-400 text-sm">Authentication failed. Reload the page and re-enter the admin key.</div>';
