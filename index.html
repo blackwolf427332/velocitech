@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AHITGS | IT, Graphics & Research Group</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
@@ -874,6 +875,9 @@ document.getElementById('portal-overlay').addEventListener('click', e => {
   if (e.target === document.getElementById('portal-overlay')) closePortal();
 });
 
+// ─── EmailJS Init ─────────────────────────────────────────────────────────────
+emailjs.init('ocMegSYUNE1G4CzX4');
+
 // ─── OTP Flow ─────────────────────────────────────────────────────────────────
 async function sendOTP() {
   const name    = document.getElementById('login-name').value.trim();
@@ -888,22 +892,33 @@ async function sendOTP() {
   setBtn(btn, true, '⟳ Sending...');
 
   try {
+    // Step 1 — Ask Worker to generate and store OTP, return it to us
     const res = await fetch('https://ahitgs-backend.ahitgs.workers.dev/send-otp', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, name, service })
     });
 
-    if (res.ok) {
-      document.getElementById('otp-email-display').textContent = email;
-      document.getElementById('step-login').classList.add('hidden');
-      document.getElementById('step-otp').classList.remove('hidden');
-    } else {
-      const d = await res.json().catch(() => ({}));
-      throw new Error(d.error || 'Could not send code. Try again.');
-    }
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Could not generate code. Try again.');
+
+    // Step 2 — Send email from browser via EmailJS
+    const expiryTime = new Date(Date.now() + 10 * 60 * 1000)
+      .toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+
+    await emailjs.send('service_t1p1drk', 'template_vi1tbi3', {
+      email:    email,
+      to_name:  name,
+      passcode: data.code,
+      time:     expiryTime,
+    });
+
+    document.getElementById('otp-email-display').textContent = email;
+    document.getElementById('step-login').classList.add('hidden');
+    document.getElementById('step-otp').classList.remove('hidden');
+
   } catch (err) {
-    showToast(err.message);
+    showToast(err.message || 'Something went wrong. Please try again.');
   } finally {
     setBtn(btn, false, 'Request Access Code');
   }
