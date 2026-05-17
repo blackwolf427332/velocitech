@@ -198,6 +198,7 @@
       <a href="#research" class="text-sm font-medium text-slate-400 hover:text-[var(--gold)] transition-colors duration-200 tracking-wide">Research</a>
       <a href="#about"    class="text-sm font-medium text-slate-400 hover:text-[var(--gold)] transition-colors duration-200 tracking-wide">About</a>
       <a href="#contact"  class="text-sm font-medium text-slate-400 hover:text-[var(--gold)] transition-colors duration-200 tracking-wide">Contact</a>
+      <a href="blog.html" class="text-sm font-medium text-slate-400 hover:text-[var(--gold)] transition-colors duration-200 tracking-wide">Blog</a>
       <button onclick="openPortal()" class="btn-gold px-5 py-2.5 rounded-full text-sm">Client Portal</button>
     </div>
 
@@ -216,6 +217,7 @@
       <a href="#research" onclick="closeMenu()" class="text-sm font-medium text-slate-300 hover:text-[var(--gold)] transition-colors">Research</a>
       <a href="#about"    onclick="closeMenu()" class="text-sm font-medium text-slate-300 hover:text-[var(--gold)] transition-colors">About</a>
       <a href="#contact"  onclick="closeMenu()" class="text-sm font-medium text-slate-300 hover:text-[var(--gold)] transition-colors">Contact</a>
+      <a href="blog.html" onclick="closeMenu()" class="text-sm font-medium text-slate-300 hover:text-[var(--gold)] transition-colors">Blog</a>
       <button onclick="openPortal();closeMenu();" class="btn-gold w-full py-3.5 rounded-xl text-sm">Client Portal</button>
     </div>
   </div>
@@ -792,44 +794,117 @@
 
       <!-- Admin dashboard -->
       <div id="admin-panel" class="hidden">
-        <div class="flex items-center justify-between mb-10">
+        <div class="flex items-center justify-between mb-8">
           <div>
             <p class="text-[10px] text-red-400 font-bold uppercase tracking-[0.32em] mb-1">Admin Console</p>
             <h2 class="display text-3xl font-bold text-white">Management Dashboard</h2>
           </div>
           <div class="flex gap-3">
-            <button onclick="loadAdminRequests()" class="btn-ghost px-4 py-2 rounded-lg text-xs font-bold">↻ Refresh</button>
+            <a href="blog.html" target="_blank" class="btn-ghost px-4 py-2 rounded-lg text-xs font-bold">↗ View Blog</a>
             <a href="/" class="px-4 py-2 rounded-lg text-xs font-bold text-red-400 transition-all"
                style="border:1px solid rgba(239,68,68,0.22);">Exit Admin</a>
           </div>
         </div>
 
-        <!-- Stats -->
-        <div class="grid grid-cols-3 gap-4 mb-8">
-          <div class="glass rounded-2xl p-5 text-center">
-            <p class="display text-3xl font-bold gold-text" id="stat-total">—</p>
-            <p class="text-[11px] text-slate-500 uppercase tracking-widest mt-1">Total Requests</p>
+        <!-- Tabs -->
+        <div class="flex gap-2 mb-8">
+          <button id="tab-requests" onclick="switchTab('requests')"
+                  class="px-5 py-2.5 rounded-xl text-xs font-bold transition-all"
+                  style="background:rgba(201,150,63,0.15);border:1px solid rgba(201,150,63,0.3);color:var(--gold);">
+            Client Requests
+          </button>
+          <button id="tab-blog" onclick="switchTab('blog')"
+                  class="px-5 py-2.5 rounded-xl text-xs font-bold transition-all"
+                  style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);color:#94A3B8;">
+            Blog Posts
+          </button>
+        </div>
+
+        <!-- ── REQUESTS TAB ── -->
+        <div id="admin-tab-requests">
+          <!-- Stats -->
+          <div class="grid grid-cols-3 gap-4 mb-8">
+            <div class="glass rounded-2xl p-5 text-center">
+              <p class="display text-3xl font-bold gold-text" id="stat-total">—</p>
+              <p class="text-[11px] text-slate-500 uppercase tracking-widest mt-1">Total Requests</p>
+            </div>
+            <div class="glass rounded-2xl p-5 text-center">
+              <p class="display text-3xl font-bold text-emerald-400" id="stat-new">—</p>
+              <p class="text-[11px] text-slate-500 uppercase tracking-widest mt-1">Unresolved</p>
+            </div>
+            <div class="glass rounded-2xl p-5 text-center">
+              <p class="display text-3xl font-bold text-sky-400" id="stat-services">—</p>
+              <p class="text-[11px] text-slate-500 uppercase tracking-widest mt-1">Services</p>
+            </div>
           </div>
-          <div class="glass rounded-2xl p-5 text-center">
-            <p class="display text-3xl font-bold text-emerald-400" id="stat-new">—</p>
-            <p class="text-[11px] text-slate-500 uppercase tracking-widest mt-1">Unresolved</p>
-          </div>
-          <div class="glass rounded-2xl p-5 text-center">
-            <p class="display text-3xl font-bold text-sky-400" id="stat-services">—</p>
-            <p class="text-[11px] text-slate-500 uppercase tracking-widest mt-1">Services</p>
+          <div class="glass rounded-3xl overflow-hidden">
+            <div class="px-6 py-4 flex items-center justify-between" style="border-bottom:1px solid var(--border);">
+              <h3 class="font-bold text-white text-sm">Client Requests</h3>
+              <div class="flex items-center gap-3">
+                <span id="admin-request-count" class="text-xs text-slate-500">Loading...</span>
+                <button onclick="loadAdminRequests()" class="text-xs font-bold text-slate-400 hover:text-[var(--gold)] transition-colors">↻ Refresh</button>
+              </div>
+            </div>
+            <div id="admin-requests-container">
+              <div class="p-10 text-center text-slate-500 text-sm">Fetching requests...</div>
+            </div>
           </div>
         </div>
 
-        <!-- Requests table -->
-        <div class="glass rounded-3xl overflow-hidden">
-          <div class="px-6 py-4 flex items-center justify-between" style="border-bottom:1px solid var(--border);">
-            <h3 class="font-bold text-white text-sm">Client Requests</h3>
-            <span id="admin-request-count" class="text-xs text-slate-500">Loading...</span>
+        <!-- ── BLOG TAB ── -->
+        <div id="admin-tab-blog" class="hidden">
+
+          <!-- New post form -->
+          <div class="glass rounded-3xl p-6 md:p-8 mb-8">
+            <h3 class="font-bold text-white mb-1 flex items-center gap-2">
+              <span class="h-2 w-2 rounded-full" style="background:var(--gold);"></span>
+              Publish New Article
+            </h3>
+            <p class="text-slate-500 text-xs mb-6">Write and publish directly to your blog.</p>
+            <div class="space-y-4">
+              <div>
+                <label class="text-[10px] font-bold uppercase tracking-widest text-slate-500 block mb-2">Title</label>
+                <input type="text" id="blog-title" placeholder="e.g. Understanding Hadith Verification" class="form-input w-full p-3 rounded-xl text-sm">
+              </div>
+              <div>
+                <label class="text-[10px] font-bold uppercase tracking-widest text-slate-500 block mb-2">Category</label>
+                <select id="blog-category" class="form-input w-full p-3 rounded-xl text-sm">
+                  <option value="IT & Cloud">IT &amp; Cloud</option>
+                  <option value="Graphic Design">Graphic Design</option>
+                  <option value="Islamic Research">Islamic Research</option>
+                </select>
+              </div>
+              <div>
+                <label class="text-[10px] font-bold uppercase tracking-widest text-slate-500 block mb-2">Excerpt (short summary)</label>
+                <input type="text" id="blog-excerpt" placeholder="A brief description shown on the blog card..." class="form-input w-full p-3 rounded-xl text-sm">
+              </div>
+              <div>
+                <label class="text-[10px] font-bold uppercase tracking-widest text-slate-500 block mb-2">Content</label>
+                <p class="text-[10px] text-slate-600 mb-2">Use ## for headings, **bold**, *italic*, &gt; for quotes, - for bullet points. Separate paragraphs with a blank line.</p>
+                <textarea id="blog-content" rows="12" placeholder="Write your article here..." class="form-input w-full p-3 rounded-xl text-sm resize-none" style="font-family:monospace;font-size:13px;"></textarea>
+              </div>
+              <button id="blog-publish-btn" onclick="publishPost()" class="btn-gold w-full py-3.5 rounded-xl text-sm font-bold">
+                Publish Article
+              </button>
+              <div id="blog-publish-success" class="hidden py-3 rounded-xl text-sm font-semibold text-emerald-400 text-center"
+                   style="background:rgba(22,163,116,0.09);border:1px solid rgba(22,163,116,0.18);">
+                ✓ Article published successfully!
+              </div>
+            </div>
           </div>
-          <div id="admin-requests-container">
-            <div class="p-10 text-center text-slate-500 text-sm">Fetching requests...</div>
+
+          <!-- Published posts list -->
+          <div class="glass rounded-3xl overflow-hidden">
+            <div class="px-6 py-4 flex items-center justify-between" style="border-bottom:1px solid var(--border);">
+              <h3 class="font-bold text-white text-sm">Published Articles</h3>
+              <button onclick="loadBlogPosts()" class="text-xs font-bold text-slate-400 hover:text-[var(--gold)] transition-colors">↻ Refresh</button>
+            </div>
+            <div id="admin-blog-container">
+              <div class="p-10 text-center text-slate-500 text-sm">Loading articles...</div>
+            </div>
           </div>
         </div>
+
       </div>
 
     </div>
@@ -1167,6 +1242,111 @@ function showToast(msg) {
   t.textContent = msg;
   document.body.appendChild(t);
   setTimeout(()=>t.remove(), 4000);
+}
+
+// ─── Admin Tabs ───────────────────────────────────────────────────────────────
+function switchTab(tab) {
+  const isReq = tab === 'requests';
+  document.getElementById('admin-tab-requests').classList.toggle('hidden', !isReq);
+  document.getElementById('admin-tab-blog').classList.toggle('hidden', isReq);
+  document.getElementById('tab-requests').style.cssText = isReq
+    ? 'background:rgba(201,150,63,0.15);border:1px solid rgba(201,150,63,0.3);color:var(--gold);padding:10px 20px;border-radius:12px;font-size:12px;font-weight:700;'
+    : 'background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);color:#94A3B8;padding:10px 20px;border-radius:12px;font-size:12px;font-weight:700;';
+  document.getElementById('tab-blog').style.cssText = !isReq
+    ? 'background:rgba(201,150,63,0.15);border:1px solid rgba(201,150,63,0.3);color:var(--gold);padding:10px 20px;border-radius:12px;font-size:12px;font-weight:700;'
+    : 'background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);color:#94A3B8;padding:10px 20px;border-radius:12px;font-size:12px;font-weight:700;';
+  if (!isReq) loadBlogPosts();
+}
+
+// ─── Publish Post ─────────────────────────────────────────────────────────────
+async function publishPost() {
+  const title    = document.getElementById('blog-title').value.trim();
+  const category = document.getElementById('blog-category').value;
+  const excerpt  = document.getElementById('blog-excerpt').value.trim();
+  const content  = document.getElementById('blog-content').value.trim();
+  const btn      = document.getElementById('blog-publish-btn');
+  const adminKey = sessionStorage.getItem('admin_key_val') || '';
+
+  if (!title)   return showToast('Please enter a title.');
+  if (!content) return showToast('Please write some content.');
+
+  setBtn(btn, true, '⟳ Publishing...');
+  document.getElementById('blog-publish-success').classList.add('hidden');
+
+  try {
+    const res = await fetch('https://ahitgs-backend.ahitgs.workers.dev/admin/blog/publish', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ key: adminKey, title, category, excerpt, content })
+    });
+    if (res.ok) {
+      document.getElementById('blog-title').value   = '';
+      document.getElementById('blog-excerpt').value = '';
+      document.getElementById('blog-content').value = '';
+      document.getElementById('blog-publish-success').classList.remove('hidden');
+      loadBlogPosts();
+    } else {
+      const d = await res.json().catch(() => ({}));
+      showToast(d.error || 'Failed to publish. Try again.');
+    }
+  } catch {
+    showToast('Network error. Try again.');
+  } finally {
+    setBtn(btn, false, 'Publish Article');
+  }
+}
+
+// ─── Load Blog Posts (admin) ──────────────────────────────────────────────────
+async function loadBlogPosts() {
+  const container = document.getElementById('admin-blog-container');
+  container.innerHTML = '<div class="p-10 text-center text-slate-500 text-sm">Loading articles...</div>';
+  const adminKey = sessionStorage.getItem('admin_key_val') || '';
+
+  try {
+    const res  = await fetch('https://ahitgs-backend.ahitgs.workers.dev/blog/posts');
+    const data = await res.json();
+    const posts = (data.posts || []).sort((a,b) => b.timestamp - a.timestamp);
+
+    if (!posts.length) {
+      container.innerHTML = '<div class="p-10 text-center text-slate-500 text-sm">No articles published yet.</div>';
+      return;
+    }
+
+    container.innerHTML = posts.map(p => {
+      const date = new Date(p.timestamp).toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' });
+      return `
+        <div class="px-6 py-4 flex items-center justify-between gap-4 hover:bg-white/[0.02] transition-colors" style="border-bottom:1px solid var(--border);">
+          <div class="flex-1 min-w-0">
+            <p class="font-semibold text-white text-sm truncate">${esc(p.title)}</p>
+            <p class="text-xs text-slate-500 mt-0.5">${esc(p.category)} &middot; ${date}</p>
+          </div>
+          <button onclick="deletePost('${esc(p.postKey)}', this)"
+                  class="flex-shrink-0 px-3 py-1.5 rounded-lg text-xs font-bold text-red-400 transition-all"
+                  style="border:1px solid rgba(239,68,68,0.2);background:rgba(239,68,68,0.05);">
+            Delete
+          </button>
+        </div>`;
+    }).join('');
+  } catch {
+    container.innerHTML = '<div class="p-8 text-center text-red-400 text-sm">Failed to load articles.</div>';
+  }
+}
+
+// ─── Delete Post ──────────────────────────────────────────────────────────────
+async function deletePost(postKey, btn) {
+  if (!postKey) return;
+  if (!confirm('Delete this article? This cannot be undone.')) return;
+  const adminKey = sessionStorage.getItem('admin_key_val') || '';
+  btn.disabled = true; btn.textContent = '...';
+  try {
+    const res = await fetch('https://ahitgs-backend.ahitgs.workers.dev/admin/blog/delete', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ key: adminKey, postKey })
+    });
+    if (res.ok) loadBlogPosts();
+    else { showToast('Could not delete. Try again.'); btn.disabled = false; btn.textContent = 'Delete'; }
+  } catch { showToast('Network error.'); btn.disabled = false; btn.textContent = 'Delete'; }
 }
 
 // ─── Init ─────────────────────────────────────────────────────────────────────
