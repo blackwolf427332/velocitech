@@ -907,7 +907,7 @@ async function sendOTP() {
       .toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
 
     await emailjs.send('service_t1p1drk', 'template_vi1tbi3', {
-      email:    email,
+      to_email: email,
       to_name:  name,
       passcode: data.code,
       time:     expiryTime,
