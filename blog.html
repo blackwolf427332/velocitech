@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog | VELOCITECH by AHITGS</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gold: #C9963F;
+      --gold-light: #E8C97A;
+      --bg: #060A14;
+      --border: rgba(255,255,255,0.07);
+    }
+    body { font-family: 'Outfit', sans-serif; background: var(--bg); color: #D8D3C8; margin: 0; overflow-x: hidden; }
+    body::after {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      opacity: 0.5; pointer-events: none; z-index: 9999;
+    }
+    .display { font-family: 'Cormorant Garamond', serif; }
+    .gold-text { background: linear-gradient(135deg, var(--gold), var(--gold-light)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .shimmer-gold {
+      background: linear-gradient(270deg, #A0722A, var(--gold), var(--gold-light), #F5E3A6, var(--gold));
+      background-size: 300% 300%; animation: shimmer 5s ease infinite;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    @keyframes shimmer { 0%,100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+    .glass { background: rgba(255,255,255,0.028); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid var(--border); }
+    .nav-glass { background: rgba(6,10,20,0.88); backdrop-filter: blur(24px); border-bottom: 1px solid var(--border); }
+    .btn-gold { background: linear-gradient(135deg, var(--gold), #A0722A); color: #060A14; font-weight: 700; border: none; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; }
+    .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 14px 36px rgba(201,150,63,0.35); }
+    .cat-btn { border: 1px solid rgba(255,255,255,0.1); background: transparent; color: #94A3B8; cursor: pointer; transition: all 0.2s; border-radius: 999px; padding: 6px 18px; font-size: 12px; font-weight: 600; font-family: 'Outfit', sans-serif; }
+    .cat-btn:hover, .cat-btn.active { border-color: var(--gold); color: var(--gold); background: rgba(201,150,63,0.08); }
+    .post-card { background: rgba(255,255,255,0.028); border: 1px solid var(--border); border-radius: 1.5rem; transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s; cursor: pointer; overflow: hidden; }
+    .post-card:hover { border-color: rgba(201,150,63,0.3); transform: translateY(-4px); box-shadow: 0 24px 48px rgba(0,0,0,0.4); }
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s cubic-bezier(0.22,1,0.36,1), transform 0.7s cubic-bezier(0.22,1,0.36,1); }
+    .reveal.visible { opacity: 1; transform: none; }
+    .d1{transition-delay:0.1s} .d2{transition-delay:0.2s} .d3{transition-delay:0.3s}
+    #mobile-menu { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.22,1,0.36,1); }
+    #mobile-menu.open { max-height: 300px; }
+
+    /* Post reading view */
+    #post-view { display: none; }
+    #post-view.active { display: block; }
+    #blog-list-view { display: block; }
+    #blog-list-view.hidden { display: none; }
+    .prose-content p { margin-bottom: 1.25rem; line-height: 1.85; color: #94A3B8; }
+    .prose-content h2 { font-family: 'Cormorant Garamond', serif; font-size: 1.75rem; font-weight: 700; color: white; margin: 2rem 0 1rem; }
+    .prose-content h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.35rem; font-weight: 600; color: #CBD5E1; margin: 1.5rem 0 0.75rem; }
+    .prose-content strong { color: #E2E8F0; font-weight: 700; }
+    .prose-content em { color: var(--gold-light); font-style: italic; }
+    .prose-content blockquote { border-left: 3px solid var(--gold); padding-left: 1.25rem; margin: 1.5rem 0; color: #94A3B8; font-style: italic; }
+    .prose-content ul { list-style: none; padding: 0; }
+    .prose-content ul li { padding-left: 1.5rem; position: relative; margin-bottom: 0.5rem; color: #94A3B8; }
+    .prose-content ul li::before { content: '→'; position: absolute; left: 0; color: var(--gold); font-weight: bold; }
+
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: rgba(201,150,63,0.25); border-radius: 4px; }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav-glass sticky top-0" style="z-index:50;position:sticky;">
+  <div class="max-w-7xl mx-auto px-5 py-4 flex items-center justify-between">
+    <a href="index.html" class="flex items-center gap-3">
+      <img src="logo.png" alt="Logo" class="h-10 w-10 rounded-xl object-contain flex-shrink-0"
+           style="background:rgba(255,255,255,0.04);border:1px solid rgba(201,150,63,0.2);padding:3px;">
+      <div class="flex flex-col leading-tight">
+        <span class="font-black text-[1.05rem] tracking-tight shimmer-gold">VELOCITECH</span>
+        <span class="text-[0.6rem] font-black tracking-[0.15em]">
+          <span style="color:#EF4444;">A</span><span style="color:#22C55E;">H</span><span style="color:#3B82F6;">I</span><span style="color:#EF4444;">T</span><span style="color:#22C55E;">G</span><span style="color:#3B82F6;">S</span>
+        </span>
+      </div>
+    </a>
+    <div class="hidden md:flex items-center gap-8">
+      <a href="index.html#services" class="text-sm font-medium text-slate-400 hover:text-[var(--gold)] transition-colors">Services</a>
+      <a href="index.html#research" class="text-sm font-medium text-slate-400 hover:text-[var(--gold)] transition-colors">Research</a>
+      <a href="index.html#about"    class="text-sm font-medium text-slate-400 hover:text-[var(--gold)] transition-colors">About</a>
+      <a href="index.html#contact"  class="text-sm font-medium text-slate-400 hover:text-[var(--gold)] transition-colors">Contact</a>
+    </div>
+    <button id="menu-btn" onclick="toggleMenu()" class="md:hidden p-2 flex flex-col gap-[5px]">
+      <span class="block h-[2px] w-6 bg-slate-300 rounded"></span>
+      <span class="block h-[2px] w-6 bg-slate-300 rounded"></span>
+      <span class="block h-[2px] w-4 bg-slate-300 rounded ml-auto"></span>
+    </button>
+  </div>
+  <div id="mobile-menu" class="md:hidden border-t border-white/5">
+    <div class="px-6 py-5 flex flex-col gap-5">
+      <a href="index.html#services" class="text-sm font-medium text-slate-300">Services</a>
+      <a href="index.html#research" class="text-sm font-medium text-slate-300">Research</a>
+      <a href="index.html#about"    class="text-sm font-medium text-slate-300">About</a>
+      <a href="index.html#contact"  class="text-sm font-medium text-slate-300">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ══ BLOG LIST VIEW ══ -->
+<div id="blog-list-view">
+
+  <!-- Header -->
+  <section class="py-24 px-6 text-center" style="background:radial-gradient(ellipse 80% 60% at 50% 0%, rgba(13,92,65,0.28) 0%, transparent 70%);">
+    <div class="max-w-3xl mx-auto reveal">
+      <p class="text-xs font-bold uppercase tracking-[0.32em] mb-4" style="color:var(--gold);">Knowledge Hub</p>
+      <h1 class="display text-5xl md:text-6xl font-bold text-white mb-6">The <em class="gold-text">VELOCITECH</em> Blog</h1>
+      <p class="text-slate-400 text-lg leading-relaxed">Insights on IT infrastructure, creative design, and Islamic research — curated by AHITGS.</p>
+    </div>
+  </section>
+
+  <!-- Category filter -->
+  <div class="px-6 pb-8 reveal">
+    <div class="max-w-4xl mx-auto flex flex-wrap justify-center gap-3">
+      <button class="cat-btn active" onclick="filterPosts('', this)">All</button>
+      <button class="cat-btn" onclick="filterPosts('IT & Cloud', this)">IT &amp; Cloud</button>
+      <button class="cat-btn" onclick="filterPosts('Graphic Design', this)">Graphic Design</button>
+      <button class="cat-btn" onclick="filterPosts('Islamic Research', this)">Islamic Research</button>
+    </div>
+  </div>
+
+  <!-- Posts grid -->
+  <section class="px-6 pb-28">
+    <div class="max-w-6xl mx-auto">
+      <div id="posts-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Loading state -->
+        <div id="posts-loading" class="md:col-span-2 lg:col-span-3 py-20 text-center text-slate-500 text-sm">
+          Loading articles...
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ══ POST READING VIEW ══ -->
+<div id="post-view">
+  <div class="max-w-3xl mx-auto px-6 py-16">
+    <button onclick="closePost()" class="flex items-center gap-2 text-slate-400 hover:text-[var(--gold)] transition-colors mb-10 text-sm font-semibold">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+      Back to Blog
+    </button>
+    <div id="post-category-badge" class="inline-block mb-6"></div>
+    <h1 id="post-title" class="display text-4xl md:text-5xl font-bold text-white mb-4 leading-tight"></h1>
+    <p id="post-date" class="text-slate-500 text-sm mb-10"></p>
+    <div style="height:1px;background:linear-gradient(to right,var(--gold),transparent);margin-bottom:2.5rem;"></div>
+    <div id="post-content" class="prose-content"></div>
+    <div style="height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent);margin-top:3rem;margin-bottom:2rem;"></div>
+    <div class="flex items-center gap-4 p-5 rounded-2xl" style="background:rgba(255,255,255,0.03);border:1px solid var(--border);">
+      <img src="logo.png" alt="Logo" class="h-10 w-10 rounded-xl object-contain" style="background:rgba(255,255,255,0.04);border:1px solid rgba(201,150,63,0.2);padding:3px;">
+      <div>
+        <p class="text-white font-semibold text-sm">Abdul Haseeb</p>
+        <p class="text-slate-500 text-xs">Founder, VELOCITECH by AHITGS</p>
+      </div>
+    </div>
+    <button onclick="closePost()" class="mt-8 btn-gold px-6 py-3 rounded-xl text-sm w-full">
+      ← Back to All Articles
+    </button>
+  </div>
+</div>
+
+<!-- Floating WhatsApp -->
+<a href="https://wa.link/k450ik" target="_blank" rel="noopener" aria-label="Chat on WhatsApp"
+   style="position:fixed;bottom:24px;right:24px;z-index:9997;width:58px;height:58px;border-radius:50%;background:#25D366;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(37,211,102,0.4);transition:transform 0.2s ease;text-decoration:none;"
+   onmouseover="this.style.transform='scale(1.12)'" onmouseout="this.style.transform='scale(1)'">
+  <svg width="30" height="30" fill="white" viewBox="0 0 24 24">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+  </svg>
+</a>
+
+<script>
+const WORKER = 'https://ahitgs-backend.ahitgs.workers.dev';
+let allPosts  = [];
+let activeCategory = '';
+
+// ─── Reveal ───────────────────────────────────────────────────────────────────
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+}, { threshold: 0 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+// ─── Mobile menu ──────────────────────────────────────────────────────────────
+let menuOpen = false;
+function toggleMenu() {
+  menuOpen = !menuOpen;
+  document.getElementById('mobile-menu').classList.toggle('open', menuOpen);
+}
+
+// ─── Category colors ──────────────────────────────────────────────────────────
+function catStyle(cat) {
+  if (cat === 'IT & Cloud')        return { bg: 'rgba(14,165,233,0.1)',  border: 'rgba(14,165,233,0.25)',  color: '#38BDF8' };
+  if (cat === 'Graphic Design')    return { bg: 'rgba(201,150,63,0.1)',  border: 'rgba(201,150,63,0.25)',  color: '#C9963F' };
+  if (cat === 'Islamic Research')  return { bg: 'rgba(22,163,116,0.1)',  border: 'rgba(22,163,116,0.25)', color: '#34D399' };
+  return { bg: 'rgba(255,255,255,0.05)', border: 'rgba(255,255,255,0.1)', color: '#94A3B8' };
+}
+
+// ─── Load posts ───────────────────────────────────────────────────────────────
+async function loadPosts(category) {
+  const grid = document.getElementById('posts-grid');
+  grid.innerHTML = '<div class="md:col-span-2 lg:col-span-3 py-20 text-center text-slate-500 text-sm">Loading articles...</div>';
+
+  try {
+    const url = WORKER + '/blog/posts' + (category ? '?category=' + encodeURIComponent(category) : '');
+    const res  = await fetch(url);
+    const data = await res.json();
+    allPosts   = data.posts || [];
+    renderPosts(allPosts);
+  } catch {
+    grid.innerHTML = '<div class="md:col-span-2 lg:col-span-3 py-20 text-center text-red-400 text-sm">Could not load articles. Please try again.</div>';
+  }
+}
+
+function renderPosts(posts) {
+  const grid = document.getElementById('posts-grid');
+  if (!posts.length) {
+    grid.innerHTML = '<div class="md:col-span-2 lg:col-span-3 py-20 text-center text-slate-500 text-sm">No articles published yet. Check back soon!</div>';
+    return;
+  }
+
+  grid.innerHTML = posts.map(function(p, i) {
+    const cs   = catStyle(p.category);
+    const date = new Date(p.timestamp).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+    return `
+      <div class="post-card reveal" style="transition-delay:${i * 0.08}s;" onclick="openPost('${esc(p.postKey)}')">
+        <div class="p-6">
+          <div class="flex items-center justify-between mb-5">
+            <span class="text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full"
+                  style="background:${cs.bg};border:1px solid ${cs.border};color:${cs.color};">
+              ${esc(p.category)}
+            </span>
+            <span class="text-[10px] text-slate-600">${date}</span>
+          </div>
+          <h2 class="display text-xl font-bold text-white mb-3 leading-snug">${esc(p.title)}</h2>
+          <p class="text-slate-400 text-sm leading-relaxed mb-5 line-clamp-3">${esc(p.excerpt)}</p>
+          <div class="flex items-center gap-2 text-xs font-semibold" style="color:var(--gold);">
+            Read Article
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+
+  document.querySelectorAll('.post-card.reveal').forEach(el => obs.observe(el));
+}
+
+// ─── Filter ───────────────────────────────────────────────────────────────────
+function filterPosts(category, btn) {
+  activeCategory = category;
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  loadPosts(category);
+}
+
+// ─── Open post ────────────────────────────────────────────────────────────────
+function openPost(postKey) {
+  const post = allPosts.find(function(p) { return p.postKey === postKey; });
+  if (!post) return;
+
+  const cs   = catStyle(post.category);
+  const date = new Date(post.timestamp).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+
+  document.getElementById('post-title').textContent = post.title;
+  document.getElementById('post-date').textContent  = 'Published ' + date;
+  document.getElementById('post-category-badge').innerHTML =
+    `<span class="text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full"
+           style="background:${cs.bg};border:1px solid ${cs.border};color:${cs.color};">${esc(post.category)}</span>`;
+
+  // Render content — convert line breaks to paragraphs
+  const paragraphs = post.content.split('\n\n').map(function(p) {
+    p = p.trim();
+    if (!p) return '';
+    if (p.startsWith('## ')) return '<h2>' + p.slice(3) + '</h2>';
+    if (p.startsWith('### ')) return '<h3>' + p.slice(4) + '</h3>';
+    if (p.startsWith('> ')) return '<blockquote>' + p.slice(2) + '</blockquote>';
+    if (p.startsWith('- ')) {
+      const items = p.split('\n').map(function(l) { return '<li>' + l.slice(2) + '</li>'; }).join('');
+      return '<ul>' + items + '</ul>';
+    }
+    return '<p>' + p.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\*(.*?)\*/g, '<em>$1</em>') + '</p>';
+  }).join('');
+
+  document.getElementById('post-content').innerHTML = paragraphs;
+
+  document.getElementById('blog-list-view').classList.add('hidden');
+  document.getElementById('post-view').classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function closePost() {
+  document.getElementById('post-view').classList.remove('active');
+  document.getElementById('blog-list-view').classList.remove('hidden');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ─── Escape ───────────────────────────────────────────────────────────────────
+function esc(s) {
+  if (!s) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ─── Init ─────────────────────────────────────────────────────────────────────
+loadPosts('');
+</script>
+</body>
+</html>
