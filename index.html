@@ -1007,33 +1007,65 @@ async function sendOTP() {
 }
 
 async function verifyOTP() {
-  const otp = document.getElementById('login-otp').value.trim();
-  const btn  = document.getElementById('verify-otp-btn');
+  const otp   = document.getElementById('otp-input').value.trim();
+  const email = document.getElementById('portal-email').value.trim(); // or wherever you store it
 
-  if (!otp || otp.length < 6) return showToast('Please enter the 6-digit code.');
-  setBtn(btn, true, '⟳ Verifying...');
+  const res  = await fetch(`${WORKER_URL}/verify-otp`, {
+    method  : 'POST',
+    headers : { 'Content-Type': 'application/json' },
+    body    : JSON.stringify({ email, otp })
+  });
+  const data = await res.json();
 
-  try {
-    const res = await fetch('https://ahitgs-backend.ahitgs.workers.dev/verify-otp', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: userEmail, otp })
-    });
-    const data = await res.json();
+  if (data.success) {
+    // ✅ ADD THIS LINE — send notification to you
+    sendLoginNotification(email);
 
-    if (res.ok && data.success) {
-      closePortal();
-      openDashboard();
-    } else {
-      showToast(data.error || 'Invalid code. Please try again.');
-    }
-  } catch {
-    showToast('Connection error. Please check your network.');
-  } finally {
-    setBtn(btn, false, 'Verify & Enter Dashboard');
+    // ... rest of your existing success code (show dashboard, etc.)
+    showDashboard();
+  } else {
+    showError('Invalid OTP. Please try again.');
   }
 }
 
+  // ─── LOGIN NOTIFICATION ──────────────────────────────────────────────
+async function sendLoginNotification(clientEmail) {
+  // ⚠️ Replace with your actual login alert template ID
+  const LOGIN_TEMPLATE_ID = 'template_login_alert';
+
+  const now       = new Date();
+  const loginTime = now.toLocaleString('en-PK', {
+    timeZone    : 'Asia/Karachi',
+    dateStyle   : 'full',
+    timeStyle   : 'medium'
+  });
+
+  const browserInfo = navigator.userAgent.includes('Chrome')  ? 'Google Chrome'
+                    : navigator.userAgent.includes('Firefox') ? 'Mozilla Firefox'
+                    : navigator.userAgent.includes('Safari')  ? 'Safari'
+                    : navigator.userAgent.includes('Edge')    ? 'Microsoft Edge'
+                    : 'Unknown Browser';
+
+  const deviceInfo  = /Mobi|Android/i.test(navigator.userAgent) ? 'Mobile Device' : 'Desktop / Laptop';
+
+  try {
+    await emailjs.send(
+      'service_t1p1drk',       // your existing service ID
+      LOGIN_TEMPLATE_ID,
+      {
+        client_email : clientEmail,
+        login_time   : loginTime,
+        browser_info : browserInfo,
+        device_info  : deviceInfo,
+        timezone     : Intl.DateTimeFormat().resolvedOptions().timeZone
+      }
+    );
+    console.log('Login notification sent.');
+  } catch (e) {
+    // Silent fail — never block the user login because of a notification error
+    console.warn('Login notification failed (non-critical):', e);
+  }
+}
 // ─── Dashboard ────────────────────────────────────────────────────────────────
 function openDashboard() {
   document.getElementById('user-name').textContent    = currentUserName || 'Client';
